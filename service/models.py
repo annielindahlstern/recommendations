@@ -17,7 +17,7 @@ class DataValidationError(Exception):
     pass
 
 
-class YourResourceModel(db.Model):
+class RecommendationModel(db.Model):
     """
     Class that represents a <your resource model name>
     """
@@ -29,7 +29,7 @@ class YourResourceModel(db.Model):
     name = db.Column(db.String(63))
 
     def __repr__(self):
-        return "<YourResourceModel %r id=[%s]>" % (self.name, self.id)
+        return "<RecommendationModel %r id=[%s]>" % (self.name, self.id)
 
     def create(self):
         """
@@ -67,11 +67,11 @@ class YourResourceModel(db.Model):
             self.name = data["name"]
         except KeyError as error:
             raise DataValidationError(
-                "Invalid YourResourceModel: missing " + error.args[0]
+                "Invalid RecommendationModel: missing " + error.args[0]
             )
         except TypeError as error:
             raise DataValidationError(
-                "Invalid YourResourceModel: body of request contained bad or no data"
+                "Invalid RecommendationModel: body of request contained bad or no data"
             )
         return self
 
@@ -88,7 +88,7 @@ class YourResourceModel(db.Model):
     @classmethod
     def all(cls):
         """ Returns all of the YourResourceModels in the database """
-        logger.info("Processing all YourResourceModels")
+        logger.info("Processing all RecommendationModels")
         return cls.query.all()
 
     @classmethod
