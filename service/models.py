@@ -16,14 +16,7 @@ class DataValidationError(Exception):
 
     pass
 
-class Reason(Enum):
-    """Enumeration of Different Reasons"""
 
-    CROSS_SELL = 0
-    UP_SELL = 1
-    ACCESSORY = 2
-    OTHER  = 3
-    
 class RecommendationModel(db.Model):
     """
     Class that represents a <your resource model name>
@@ -32,17 +25,8 @@ class RecommendationModel(db.Model):
     app = None
 
     # Table Schema
-    
     id = db.Column(db.Integer, primary_key=True)
-    
-    prod_A_id = db.Column(db.Integer, primary_key=False)
-    prod_A_name = db.Column(db.String(63), nullable = False)
-    
-    prod_B_id = db.Column(db.Integer, nullable = False)
-    prod_B_name = db.Column(db.String(63), nullable = False)
-    
-    reason = db.Column(
-        db.Enum(Reason), nullable=False, server_default=(Reason.OTHER.name)
+    name = db.Column(db.String(63))
 
     def __repr__(self):
         return "<RecommendationModel %r id=[%s]>" % (self.name, self.id)
