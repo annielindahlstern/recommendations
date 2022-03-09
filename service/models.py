@@ -34,13 +34,14 @@ class RecommendationModel(db.Model):
 
     # Table Schema
     
-    # what is the original product (product A)
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(63), nullable = False) 
 
+    # what is the original product (product A)
+    name = db.Column(db.String(63), nullable = False) 
+    prod_A_id = db.Column(db.Integer, nullable = False)
     # what is being recommended based on the product (product B)
     prod_B_name = db.Column(db.String(63), nullable = False)
-    # prod_B_id = db.Column(db.Integer, nullable = False)
+    prod_B_id = db.Column(db.Integer, nullable = False)
 
     # the Reason for the recommendation based on enumerators
     reason = db.Column(db.Enum(Reason), nullable=False, server_default=(Reason.OTHER.name))
