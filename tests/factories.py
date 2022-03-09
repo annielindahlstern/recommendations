@@ -20,8 +20,10 @@ from factory.fuzzy import FuzzyChoice
 from service.models import RecommendationModel
 
 
+
 class RecsFactory(factory.Factory):
     """Creates fake recommendations"""
+
 
     class Meta:
         model = RecommendationModel
