@@ -3,6 +3,7 @@ Models for YourResourceModel
 All of the models are stored in this module
 """
 import logging
+from enum import Enum
 from flask_sqlalchemy import SQLAlchemy
 
 logger = logging.getLogger("flask.app")
@@ -33,16 +34,16 @@ class RecommendationModel(db.Model):
 
     # Table Schema
     
+    # what is the original product (product A)
     id = db.Column(db.Integer, primary_key=True)
-    
-    prod_A_id = db.Column(db.Integer, primary_key=False)
-    prod_A_name = db.Column(db.String(63), nullable = False)
-    
-    prod_B_id = db.Column(db.Integer, nullable = False)
+    name = db.Column(db.String(63), nullable = False) 
+
+    # what is being recommended based on the product (product B)
     prod_B_name = db.Column(db.String(63), nullable = False)
-    
-    reason = db.Column(
-        db.Enum(Reason), nullable=False, server_default=(Reason.OTHER.name)
+    # prod_B_id = db.Column(db.Integer, nullable = False)
+
+    # the Reason for the recommendation based on enumerators
+    reason = db.Column(db.Enum(Reason), nullable=False, server_default=(Reason.OTHER.name))
 
     def __repr__(self):
         return "<RecommendationModel %r id=[%s]>" % (self.name, self.id)
