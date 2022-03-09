@@ -25,8 +25,13 @@ class RecommendationModel(db.Model):
     app = None
 
     # Table Schema
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(63))
+    prod_A_id = db.Column(db.Integer, primary_key=True)
+    prod_A_name = db.Column(db.String(63))
+    
+    prod_B_id = db.Column(db.Integer, primary_key=False)
+    prod_B_name = db.Column(db.String(63))
+    
+    reason = db.Column(db.String(128))
 
     def __repr__(self):
         return "<RecommendationModel %r id=[%s]>" % (self.name, self.id)
