@@ -52,7 +52,7 @@ class RecommendationModel(db.Model):
         """
         Creates a YourResourceModel to the database
         """
-        logger.info("Creating %s", self.name)
+        logger.info("Creating Recommendation for %s", self.name)
         self.id = None  # id must be none to generate next primary key
         db.session.add(self)
         db.session.commit()
@@ -61,18 +61,18 @@ class RecommendationModel(db.Model):
         """
         Updates a YourResourceModel to the database
         """
-        logger.info("Saving %s", self.name)
+        logger.info("Saving Recommendation for %s", self.name)
         db.session.commit()
 
     def delete(self):
         """ Removes a YourResourceModel from the data store """
-        logger.info("Deleting %s", self.name)
+        logger.info("Deleting Recommendation for %s", self.name)
         db.session.delete(self)
         db.session.commit()
 
     def serialize(self):
         """ Serializes a YourResourceModel into a dictionary """
-        return {"id": self.id, "name": self.name}
+        return {"Recommendation id": self.id, "Product Name": self.name,"Recommended Product Name": self.prod_B_name, "Reason Enum" :self.reason}
 
     def deserialize(self, data):
         """
