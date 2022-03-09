@@ -4,12 +4,12 @@ Test cases for YourResourceModel Model
 import logging
 import unittest
 import os
-from service.models import YourResourceModel, DataValidationError, db
+from service.models import RecommendationModel, DataValidationError, db
 
 ######################################################################
 #  <your resource name>   M O D E L   T E S T   C A S E S
 ######################################################################
-class TestYourResourceModel(unittest.TestCase):
+class TestRecommendationModel(unittest.TestCase):
     """ Test Cases for YourResourceModel Model """
 
     @classmethod
