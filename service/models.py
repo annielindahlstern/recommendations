@@ -73,10 +73,10 @@ class RecommendationModel(db.Model):
 
     def serialize(self):
         """ Serializes a YourResourceModel into a dictionary """
-        return {"Recommendation id": self.id, "Product Name": self.name,"Recommended Product Name": self.prod_B_name, "Reason Enum" :self.reason}
+        return {"Recommendation id": self.id, "Product Name": self.name,"Product ID": self.prod_A_id,"Recommended Product Name": self.prod_B_name,"Recommended Product ID": self.prod_B_id, "Reason Enum" :self.reason}
 
     def deserialize(self, data):
-        """
+        """ 
         Deserializes a YourResourceModel from a dictionary
         Args:
             data (dict): A dictionary containing the resource data
