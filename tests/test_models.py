@@ -169,6 +169,20 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(recs[0].prod_B_id, 10)
         self.assertEqual(recs[0].reason, Reason.ACCESSORY)
 
+    def test_find_by_reason(self):
+        """Find Recommendations by Reason"""
+        RecommendationModel(name="iPhone", prod_A_id=1,prod_B_name="AirPods", prod_B_id=10, reason = Reason.ACCESSORY).create()
+        RecommendationModel(name="Radio", prod_A_id=2,prod_B_name="Batteries", prod_B_id=6, reason = Reason.CROSS_SELL).create()
+        RecommendationModel(name="Printer", prod_A_id=125,prod_B_name="Ink", prod_B_id=33, reason = Reason.CROSS_SELL).create()
+        recs = RecommendationModel.find_by_reason(Reason.CROSS_SELL)
+        rec_list = list(recs)
+        self.assertEqual(len(rec_list), 2)
+        self.assertEqual(recs[0].prod_B_name, "Batteries")
+        self.assertEqual(recs[0].name, "Radio")
+        self.assertEqual(recs[0].prod_B_id, 6)
+        recs = RecommendationModel.find_by_reason(Reason.ACCESSORY)
+        rec_list = list(recs)
+        self.assertEqual(len(rec_list), 1)
 
     def test_find_or_404_found(self):
         """Find or return 404 found"""

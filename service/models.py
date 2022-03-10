@@ -142,3 +142,12 @@ class RecommendationModel(db.Model):
         """
         logger.info("Processing name query for %r ...", prod_A_id)
         return cls.query.filter(cls.prod_A_id == prod_A_id)
+
+    @classmethod
+    def find_by_reason(cls, reason : Reason = Reason.OTHER):
+        """Returns all Recommendations with the given name
+        Args:
+            name (string): the name of the YourResourceModels you want to match
+        """
+        logger.info("Processing name query for %s ...", reason)
+        return cls.query.filter(cls.reason == reason)
