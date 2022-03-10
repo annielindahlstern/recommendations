@@ -27,7 +27,7 @@ class Reason(Enum):
     
 class RecommendationModel(db.Model):
     """
-    Class that represents a <your resource model name>
+    Class that represents a Recommendation
     """
 
     app = None
