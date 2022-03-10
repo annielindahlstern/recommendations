@@ -12,6 +12,10 @@ from werkzeug.exceptions import NotFound
 
 from tests.factories import RecsFactory
 
+
+DATABASE_URI = os.getenv(
+    "DATABASE_URI", "postgresql://postgres:postgres@localhost:5432/testdb"
+)
 ######################################################################
 #  <your resource name>   M O D E L   T E S T   C A S E S
 ######################################################################
