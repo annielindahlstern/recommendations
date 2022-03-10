@@ -73,23 +73,27 @@ class RecommendationModel(db.Model):
 
     def serialize(self):
         """ Serializes a YourResourceModel into a dictionary """
-        return {"Recommendation id": self.id, "Product Name": self.name,"Product ID": self.prod_A_id,"Recommended Product Name": self.prod_B_name,"Recommended Product ID": self.prod_B_id, "Reason Enum" :self.reason}
+        return {"id": self.id, "name": self.name,"prod_A_id": self.prod_A_id,"prod_B_name": self.prod_B_name,"prod_B_id": self.prod_B_id, "reason" :self.reason.name}
 
     def deserialize(self, data):
         """ 
-        Deserializes a YourResourceModel from a dictionary
+        Deserializes a Recommendation from a dictionary
         Args:
             data (dict): A dictionary containing the resource data
         """
         try:
             self.name = data["name"]
+            self.prod_A_id = data["prod_A_id"]
+            self.prod_B_name = data["prod_B_name"]
+            self.prod_B_id = data["prod_B_id"]
+            self.reason = getattr(Reason, data["reason"])  # create enum from string
+        except AttributeError as error:
+            raise DataValidationError("Invalid attribute: " + error.args[0])
         except KeyError as error:
-            raise DataValidationError(
-                "Invalid Recommendation: missing " + error.args[0]
-            )
+            raise DataValidationError("Invalid pet: missing " + error.args[0])
         except TypeError as error:
             raise DataValidationError(
-                "Invalid Recommendation: body of request contained bad or no data"
+                "Invalid pet: body of request contained bad or no data " + str(error)
             )
         return self
 

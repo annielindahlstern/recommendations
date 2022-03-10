@@ -78,7 +78,7 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(len(recs), 1)
 
     def test_serialize_a_recommendation(self):
-        """Test serialization of a Pet"""
+        """Test serialization of a Recommendation"""
         rec = RecsFactory()
         data = rec.serialize()
         self.assertNotEqual(data, None)
