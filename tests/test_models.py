@@ -63,7 +63,7 @@ class TestRecommendationModel(unittest.TestCase):
         rec = RecommendationModel(name="iPhone", prod_A_id = 5, prod_B_name = "AirPods", prod_B_id = 8, reason = Reason.CROSS_SELL)
         self.assertEqual(rec.prod_B_id, 8)
         self.assertEqual(rec.reason, Reason.CROSS_SELL)
-
+ 
     def test_add_a_recommendation(self):
         """Create a recommendation and add it to the database"""
         recs = RecommendationModel.all()
@@ -77,3 +77,40 @@ class TestRecommendationModel(unittest.TestCase):
         recs = RecommendationModel.all()
         self.assertEqual(len(recs), 1)
 
+    def test_serialize_a_recommendation(self):
+        """Test serialization of a Pet"""
+        rec = RecsFactory()
+        data = rec.serialize()
+        self.assertNotEqual(data, None)
+        self.assertIn("id", data)
+        self.assertEqual(data["id"], rec.id)
+        self.assertIn("name", data)
+        self.assertEqual(data["name"], rec.name)
+        self.assertIn("prod_A_id", data)
+        self.assertEqual(data["prod_A_id"], rec.prod_A_id)
+        self.assertIn("prod_B_name", data)
+        self.assertEqual(data["prod_B_name"], rec.prod_B_name)
+        self.assertIn("prod_B_id", data)
+        self.assertEqual(data["prod_B_id"], rec.prod_B_id)
+        self.assertIn("reason", data)
+        self.assertEqual(data["reason"], rec.reason.name)
+
+    def test_deserialize_a_rec(self):
+        """Test deserialization of a Recommendation"""
+        data = {
+            "id": 1,
+            "name": "iPhone",
+            "prod_A_id": 5,
+            "prod_B_name": "AirPods",
+            "prod_B_id": 10,
+            "reason": "ACCESSORY",
+        }
+        rec = RecommendationModel()
+        rec.deserialize(data)
+        self.assertNotEqual(rec, None)
+        self.assertEqual(rec.id, None)
+        self.assertEqual(rec.name, "iPhone")
+        self.assertEqual(rec.prod_A_id, 5)
+        self.assertEqual(rec.prod_B_name, "AirPods")
+        self.assertEqual(rec.prod_B_id, 10)
+        self.assertEqual(rec.reason, Reason.ACCESSORY)
