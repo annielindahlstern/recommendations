@@ -1,5 +1,5 @@
 """
-Test cases for YourResourceModel Model
+Test cases for Recommendation Model
 """
 import logging
 import unittest
@@ -14,13 +14,13 @@ from tests.factories import RecsFactory
 
 
 DATABASE_URI = os.getenv(
-    "DATABASE_URI", "postgresql://postgres:postgres@localhost:5432/testdb"
+      "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
 )
 ######################################################################
 #  <your resource name>   M O D E L   T E S T   C A S E S
 ######################################################################
 class TestRecommendationModel(unittest.TestCase):
-    """ Test Cases for YourResourceModel Model """
+    """ Test Cases for Recommendation Model """
 
     @classmethod
     def setUpClass(cls):
@@ -64,7 +64,7 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(rec.prod_B_id, 8)
         self.assertEqual(rec.reason, Reason.CROSS_SELL)
 
-    def test_add_a_pet(self):
+    def test_add_a_recommendation(self):
         """Create a recommendation and add it to the database"""
         recs = RecommendationModel.all()
         self.assertEqual(recs, [])
