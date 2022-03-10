@@ -127,9 +127,18 @@ class RecommendationModel(db.Model):
 
     @classmethod
     def find_by_name(cls, name):
-        """Returns all YourResourceModels with the given name
+        """Returns all Recommendations with the given name
         Args:
             name (string): the name of the YourResourceModels you want to match
         """
         logger.info("Processing name query for %s ...", name)
         return cls.query.filter(cls.name == name)
+
+    @classmethod
+    def find_by_prod_A_id(cls, prod_A_id):
+        """Returns all Recommendations with the given name
+        Args:
+            name (string): the name of the YourResourceModels you want to match
+        """
+        logger.info("Processing name query for %r ...", prod_A_id)
+        return cls.query.filter(cls.prod_A_id == prod_A_id)

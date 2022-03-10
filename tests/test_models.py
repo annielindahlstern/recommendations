@@ -114,3 +114,57 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(rec.prod_B_name, "AirPods")
         self.assertEqual(rec.prod_B_id, 10)
         self.assertEqual(rec.reason, Reason.ACCESSORY)
+
+    def test_deserialize_missing_data(self):
+        """Test deserialization of a Recommendation with missing data"""
+        data ={
+            "id": 1,
+            "name": "iPhone",
+            "prod_A_id": 5,
+            "prod_B_name": "AirPods",
+            "prod_B_id": 10,
+        }
+        rec = RecommendationModel()
+        self.assertRaises(DataValidationError, rec.deserialize, data)
+
+    def test_deserialize_bad_data(self):
+        """Test deserialization of bad data"""
+        data = "this is not a dictionary"
+        rec = RecommendationModel()
+        self.assertRaises(DataValidationError, rec.deserialize, data)
+
+    def test_deserialize_bad_reason(self):
+        """Test deserialization of bad available attribute"""
+        test_rec = RecsFactory()
+        data = test_rec.serialize()
+        data["reason"] = "Bad Item"
+        rec = RecommendationModel()
+        self.assertRaises(DataValidationError, rec.deserialize, data)
+
+    def test_find_recommendation(self):
+        """Find a Recommendation by ID"""
+        recs = RecsFactory.create_batch(3)
+        for rec in recs:
+            rec.create()
+        logging.debug(recs)
+        # make sure they got saved
+        self.assertEqual(len(RecommendationModel.all()), 3)
+        # find the 2nd pet in the list
+        rec = RecommendationModel.find(recs[1].id)
+        self.assertIsNot(rec, None)
+        self.assertEqual(rec.id, recs[1].id)
+        self.assertEqual(rec.name, recs[1].name)
+        self.assertEqual(rec.prod_A_id, recs[1].prod_A_id)
+        self.assertEqual(rec.prod_B_name, recs[1].prod_B_name)
+        self.assertEqual(rec.prod_B_id, recs[1].prod_B_id)
+        self.assertEqual(rec.reason, recs[1].reason)
+
+    def test_find_by_product_A_id(self):
+        """Find Pets by product_A_id"""
+        RecommendationModel(name="iPhone", prod_A_id=1,prod_B_name="AirPods", prod_B_id=10, reason = Reason.ACCESSORY).create()
+        RecommendationModel(name="Radion", prod_A_id=2,prod_B_name="Batteries", prod_B_id=6, reason = Reason.CROSS_SELL).create()
+        recs = RecommendationModel.find_by_prod_A_id(1)
+        self.assertEqual(recs[0].prod_B_name, "AirPods")
+        self.assertEqual(recs[0].name, "iPhone")
+        self.assertEqual(recs[0].prod_B_id, 10)
+        self.assertEqual(recs[0].reason, Reason.ACCESSORY)
