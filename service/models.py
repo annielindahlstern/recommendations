@@ -136,18 +136,36 @@ class RecommendationModel(db.Model):
 
     @classmethod
     def find_by_prod_A_id(cls, prod_A_id):
-        """Returns all Recommendations with the given name
+        """Returns all Recommendations with the given original product ID
         Args:
-            name (string): the name of the YourResourceModels you want to match
+            name (string): the ID of the original product you want to match
         """
         logger.info("Processing name query for %r ...", prod_A_id)
         return cls.query.filter(cls.prod_A_id == prod_A_id)
 
     @classmethod
     def find_by_reason(cls, reason : Reason = Reason.OTHER):
-        """Returns all Recommendations with the given name
+        """Returns all Recommendations with the given reason
         Args:
-            name (string): the name of the YourResourceModels you want to match
+            name (string): the reason of the Recommendation you want to match
         """
         logger.info("Processing name query for %s ...", reason)
         return cls.query.filter(cls.reason == reason)
+
+    @classmethod
+    def find_by_prod_B_id(cls, prod_B_id):
+        """Returns all Recommendations with the given recommended product ID (Product B)
+        Args:
+            name (string): the recommended product ID of the Recommendation you want to match
+        """
+        logger.info("Processing name query for %r ...", prod_B_id)
+        return cls.query.filter(cls.prod_B_id == prod_B_id)
+    
+    @classmethod
+    def find_by_prod_B_name(cls, prod_B_name):
+        """Returns all Recommendations with the given recommended product name (Product B)
+        Args:
+            name (string): the recommended product name of the Recommendation you want to match
+        """
+        logger.info("Processing name query for %r ...", prod_B_name)
+        return cls.query.filter(cls.prod_B_id == prod_B_name)

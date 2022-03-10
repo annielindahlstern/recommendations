@@ -159,10 +159,20 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(rec.prod_B_id, recs[1].prod_B_id)
         self.assertEqual(rec.reason, recs[1].reason)
 
-    def test_find_by_product_A_id(self):
-        """Find Pets by product_A_id"""
+    def test_find_by_name(self):
+        """Find a Recommendation by Name"""
         RecommendationModel(name="iPhone", prod_A_id=1,prod_B_name="AirPods", prod_B_id=10, reason = Reason.ACCESSORY).create()
-        RecommendationModel(name="Radion", prod_A_id=2,prod_B_name="Batteries", prod_B_id=6, reason = Reason.CROSS_SELL).create()
+        RecommendationModel(name="Radio", prod_A_id=2,prod_B_name="Batteries", prod_B_id=6, reason = Reason.CROSS_SELL).create()
+        recs = RecommendationModel.find_by_name("iPhone")
+        self.assertEqual(recs[0].prod_B_name, "AirPods")
+        self.assertEqual(recs[0].prod_A_id, 1)
+        self.assertEqual(recs[0].prod_B_id, 10)
+        self.assertEqual(recs[0].reason, Reason.ACCESSORY)
+
+    def test_find_by_product_A_id(self):
+        """Find Recommendation by product_A_id"""
+        RecommendationModel(name="iPhone", prod_A_id=1,prod_B_name="AirPods", prod_B_id=10, reason = Reason.ACCESSORY).create()
+        RecommendationModel(name="Radio", prod_A_id=2,prod_B_name="Batteries", prod_B_id=6, reason = Reason.CROSS_SELL).create()
         recs = RecommendationModel.find_by_prod_A_id(1)
         self.assertEqual(recs[0].prod_B_name, "AirPods")
         self.assertEqual(recs[0].name, "iPhone")
@@ -183,6 +193,16 @@ class TestRecommendationModel(unittest.TestCase):
         recs = RecommendationModel.find_by_reason(Reason.ACCESSORY)
         rec_list = list(recs)
         self.assertEqual(len(rec_list), 1)
+
+    def test_find_by_prod_B_id(self):
+        """Find Recommendations by product_B_id"""
+        RecommendationModel(name="iPhone", prod_A_id=1,prod_B_name="AirPods", prod_B_id=10, reason = Reason.ACCESSORY).create()
+        RecommendationModel(name="Radio", prod_A_id=2,prod_B_name="Batteries", prod_B_id=6, reason = Reason.CROSS_SELL).create()
+        recs = RecommendationModel.find_by_prod_B_id(10)
+        self.assertEqual(recs[0].prod_B_name, "AirPods")
+        self.assertEqual(recs[0].name, "iPhone")
+        self.assertEqual(recs[0].prod_A_id, 1)
+        self.assertEqual(recs[0].reason, Reason.ACCESSORY)
 
     def test_find_or_404_found(self):
         """Find or return 404 found"""
