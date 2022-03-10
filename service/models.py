@@ -27,7 +27,7 @@ class Reason(Enum):
     
 class RecommendationModel(db.Model):
     """
-    Class that represents a <your resource model name>
+    Class that represents a Recommendation
     """
 
     app = None
@@ -47,7 +47,7 @@ class RecommendationModel(db.Model):
     reason = db.Column(db.Enum(Reason), nullable=False, server_default=(Reason.OTHER.name))
 
     def __repr__(self):
-        return "<RecommendationModel %r id=[%s]>" % (self.name, self.id)
+        return "<Recommendation %r id=[%s]>" % (self.name, self.id)
 
     def create(self):
         """
@@ -85,11 +85,11 @@ class RecommendationModel(db.Model):
             self.name = data["name"]
         except KeyError as error:
             raise DataValidationError(
-                "Invalid RecommendationModel: missing " + error.args[0]
+                "Invalid Recommendation: missing " + error.args[0]
             )
         except TypeError as error:
             raise DataValidationError(
-                "Invalid RecommendationModel: body of request contained bad or no data"
+                "Invalid Recommendation: body of request contained bad or no data"
             )
         return self
 
