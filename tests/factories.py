@@ -17,7 +17,7 @@ Test Factory to make fake objects for testing
 """
 import factory
 from factory.fuzzy import FuzzyChoice
-from service.models import RecommendationModel
+from service.models import Reason, RecommendationModel
 
 
 
@@ -36,4 +36,4 @@ class RecsFactory(factory.Factory):
     prod_B_name = factory.Faker("first_name")
     prod_B_id = factory.Sequence(lambda n: n)
 
-    reason = FuzzyChoice(choices=[0 , 1 , 2, 3])
+    reason = FuzzyChoice(choices=[Reason.CROSS_SELL , Reason.UP_SELL , Reason.ACCESSORY, Reason.OTHER])
