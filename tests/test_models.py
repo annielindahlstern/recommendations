@@ -168,3 +168,22 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(recs[0].name, "iPhone")
         self.assertEqual(recs[0].prod_B_id, 10)
         self.assertEqual(recs[0].reason, Reason.ACCESSORY)
+
+
+    def test_find_or_404_found(self):
+        """Find or return 404 found"""
+        recs = RecsFactory.create_batch(3)
+        for rec in recs:
+            rec.create()
+
+        rec = RecommendationModel.find_or_404(recs[1].id)
+        self.assertIsNot(rec, None)
+        self.assertEqual(rec.id, recs[1].id)
+        self.assertEqual(rec.name, recs[1].name)
+        self.assertEqual(rec.prod_A_id, recs[1].prod_A_id)
+        self.assertEqual(rec.prod_B_name, recs[1].prod_B_name)
+        self.assertEqual(rec.prod_B_id, recs[1].prod_B_id)
+
+    def test_find_or_404_not_found(self):
+        """Find or return 404 NOT found"""
+        self.assertRaises(NotFound, RecommendationModel.find_or_404, 0)
