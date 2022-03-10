@@ -17,16 +17,23 @@ Test Factory to make fake objects for testing
 """
 import factory
 from factory.fuzzy import FuzzyChoice
-from service.models import RecommendationModel
+from service.models import Reason, RecommendationModel
 
 
-class PetFactory(factory.Factory):
-    """Creates fake pets that you don't have to feed"""
+
+class RecsFactory(factory.Factory):
+    """Creates fake recommendations"""
+
 
     class Meta:
         model = RecommendationModel
 
     id = factory.Sequence(lambda n: n)
+    
     name = factory.Faker("first_name")
-    category = FuzzyChoice(choices=["dog", "cat", "bird", "fish"])
-    available = FuzzyChoice(choices=[True, False])
+    prod_A_id = factory.Sequence(lambda n: n)
+
+    prod_B_name = factory.Faker("first_name")
+    prod_B_id = factory.Sequence(lambda n: n)
+
+    reason = FuzzyChoice(choices=[Reason.CROSS_SELL , Reason.UP_SELL , Reason.ACCESSORY, Reason.OTHER])
