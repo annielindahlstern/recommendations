@@ -19,7 +19,7 @@ import unittest
 # from unittest.mock import MagicMock, patch
 from urllib.parse import quote_plus
 from service import app, status
-from service.models import RecommendationModel, db
+from service.models import Reason, RecommendationModel, db
 from .factories import RecsFactory
 
 # Disable all but critical errors during normal test run
@@ -39,7 +39,7 @@ CONTENT_TYPE_JSON = "application/json"
 class TestYourRecommendationServer(unittest.TestCase):
     """ REST API Server Tests """
 
-     @classmethod
+    @classmethod
     def setUpClass(cls):
         """Run once before all tests"""
         app.config["TESTING"] = True
@@ -74,7 +74,7 @@ class TestYourRecommendationServer(unittest.TestCase):
                 BASE_URL, json=test_rec.serialize(), content_type=CONTENT_TYPE_JSON
             )
             self.assertEqual(
-                resp.status_code, status.HTTP_201_CREATED, "Could not create test recommendation"
+                 resp.status_code, status.HTTP_201_CREATED, "Could not create test recommendation"
             )
             new_rec = resp.get_json()
             test_rec.id = new_rec["id"]
@@ -90,32 +90,47 @@ class TestYourRecommendationServer(unittest.TestCase):
         data = resp.get_json()
         self.assertEqual(data["name"], "Recommendation Demo REST API Service")
     
-    def test_update_rec(self):
-        """Update an existing Rec"""
-        # create a rec to update
-        test_rec = PetFactory()
-        resp = self.app.post(
-            BASE_URL, json=test_rec.serialize(), content_type=CONTENT_TYPE_JSON
-        )
-        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
-
-        # update the rec
-        new_rec = resp.get_json()
-        logging.debug(new_rec)
-        new_rec["category"] = "unknown"
-        resp = self.app.put(
-            "/recs/{}".format(new_rec["id"]),
-            json=new_rec,
-            content_type=CONTENT_TYPE_JSON,
-        )
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        updated_rec = resp.get_json()
-        self.assertEqual(updated_rec["category"], "unknown")
-
-    def test_get_pet_list(self):
-        """Get a list of Recommendations"""
-        self._create_recs(5)
-        resp = self.app.get(BASE_URL)
-        self.assertEqual(resp.status_code, status.HTTP_200_OK)
-        data = resp.get_json()
-        self.assertEqual(len(data), 5)
+    
+    # def test_create_rec(self):
+    #     """Create a new Pet"""
+    #     test_rec = RecsFactory()
+    #     logging.debug(test_rec)
+    #     resp = self.app.post(
+    #         BASE_URL, json=test_rec.serialize(), content_type=CONTENT_TYPE_JSON
+    #     )
+    #     self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+    #     # Make sure location header is set
+    #     location = resp.headers.get("Location", None)
+    #     self.assertIsNotNone(location)
+    #     # Check the data is correct
+    #     new_rec = resp.get_json()
+    #     self.assertEqual(new_rec["name"], test_rec.name, "Names do not match")
+    #     self.assertEqual(
+    #         new_rec["prod_A_id"], test_rec.prod_A_id, "Product A IDs do not match"
+    #     )
+    #     self.assertEqual(
+    #         new_rec["prod_B_id"], test_rec.prod_B_id, "Product B IDs do not match"
+    #     )
+    #     self.assertEqual(
+    #         new_rec["prod_B_name"], test_rec.prod_B_name, "Product B names does not match"
+    #     )
+    #     self.assertEqual(
+    #         new_rec["reason"], test_rec.reason.name, "Reasons does not match"
+    #     )
+    #     # Check that the location header was correct
+    #     resp = self.app.get(location, content_type=CONTENT_TYPE_JSON)
+    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
+    #     new_rec = resp.get_json()
+    #     self.assertEqual(new_rec["name"], test_rec.name, "Names do not match")
+    #     self.assertEqual(
+    #         new_rec["prod_A_id"], test_rec.prod_A_id, "Product A IDs do not match"
+    #     )
+    #     self.assertEqual(
+    #         new_rec["prod_B_id"], test_rec.prod_B_id, "Product B IDs do not match"
+    #     )
+    #     self.assertEqual(
+    #         new_rec["prod_B_name"], test_rec.prod_B_name, "Product B names does not match"
+    #     )
+    #     self.assertEqual(
+    #         new_rec["reason"], test_rec.reason.name, "Reasons does not match"
+    #     )
