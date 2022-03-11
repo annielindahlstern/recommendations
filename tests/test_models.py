@@ -10,7 +10,7 @@ from service.models import Reason, RecommendationModel, DataValidationError, db
 from service import app
 from werkzeug.exceptions import NotFound
 
-from tests.factories import RecsFactory
+from tests.factories import RecFactory
 
 
 DATABASE_URI = os.getenv(
@@ -52,7 +52,7 @@ class TestRecommendationModel(unittest.TestCase):
 
     # def test_update_a_recommendation(self):
     #     """Update a Recommendation"""
-    #     rec = RecsFactory()
+    #     rec = RecFactory()
     #     logging.debug(rec)
     #     rec.create()
     #     logging.debug(rec)
@@ -73,7 +73,7 @@ class TestRecommendationModel(unittest.TestCase):
 
     def test_delete_a_rec(self):
         """Delete a Recommendation"""
-        rec = RecsFactory()
+        rec = RecFactory()
         rec.create()
         self.assertEqual(len(RecommendationModel.all()), 1)
         # delete the rec and make sure it isn't in the database
@@ -109,7 +109,7 @@ class TestRecommendationModel(unittest.TestCase):
 
     def test_serialize_a_recommendation(self):
         """Test serialization of a Recommendation"""
-        rec = RecsFactory()
+        rec = RecFactory()
         data = rec.serialize()
         self.assertNotEqual(data, None)
         self.assertIn("id", data)
@@ -165,7 +165,7 @@ class TestRecommendationModel(unittest.TestCase):
 
     def test_deserialize_bad_reason(self):
         """Test deserialization of bad available attribute"""
-        test_rec = RecsFactory()
+        test_rec = RecFactory()
         data = test_rec.serialize()
         data["reason"] = "Bad Item"
         rec = RecommendationModel()
@@ -173,7 +173,7 @@ class TestRecommendationModel(unittest.TestCase):
 
     def test_find_recommendation(self):
         """Find a Recommendation by ID"""
-        recs = RecsFactory.create_batch(3)
+        recs = RecFactory.create_batch(3)
         for rec in recs:
             rec.create()
         logging.debug(recs)
@@ -236,7 +236,7 @@ class TestRecommendationModel(unittest.TestCase):
 
     def test_find_or_404_found(self):
         """Find or return 404 found"""
-        recs = RecsFactory.create_batch(3)
+        recs = RecFactory.create_batch(3)
         for rec in recs:
             rec.create()
 

@@ -20,7 +20,7 @@ import unittest
 from urllib.parse import quote_plus
 from service import app, status
 from service.models import Reason, RecommendationModel, db
-from .factories import RecsFactory
+from .factories import RecFactory
 
 # Disable all but critical errors during normal test run
 # uncomment for debugging failing tests
@@ -69,7 +69,7 @@ class TestYourRecommendationServer(unittest.TestCase):
         """Factory method to create pets in bulk"""
         recs = []
         for _ in range(count):
-            test_rec = RecsFactory()
+            test_rec = RecFactory()
             resp = self.app.post(
                 BASE_URL, json=test_rec.serialize(), content_type=CONTENT_TYPE_JSON
             )
@@ -93,7 +93,7 @@ class TestYourRecommendationServer(unittest.TestCase):
     
     # def test_create_rec(self):
     #     """Create a new Pet"""
-    #     test_rec = RecsFactory()
+    #     test_rec = RecFactory()
     #     logging.debug(test_rec)
     #     resp = self.app.post(
     #         BASE_URL, json=test_rec.serialize(), content_type=CONTENT_TYPE_JSON
