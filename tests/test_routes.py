@@ -1,4 +1,6 @@
 """
+TestRecommendationModel API Service Test Suite
+=======
 """
 """
 Recommendation API Service Test Suite
@@ -28,7 +30,7 @@ logging.disable(logging.CRITICAL)
 DATABASE_URI = os.getenv(
     "DATABASE_URI", "postgresql://postgres:postgres@localhost:5432/testdb"
 )
-BASE_URL = "/recs"
+BASE_URL = "/recommendations"
 CONTENT_TYPE_JSON = "application/json"
 
 ######################################################################
@@ -37,7 +39,7 @@ CONTENT_TYPE_JSON = "application/json"
 class TestYourRecommendationServer(unittest.TestCase):
     """ REST API Server Tests """
 
-    @classmethod
+     @classmethod
     def setUpClass(cls):
         """Run once before all tests"""
         app.config["TESTING"] = True
@@ -81,14 +83,34 @@ class TestYourRecommendationServer(unittest.TestCase):
     ######################################################################
     #  P L A C E   T E S T   C A S E S   H E R E
     ######################################################################
-
     def test_index(self):
         """Test the Home Page"""
         resp = self.app.get("/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(data["name"], "Recommendation Demo REST API Service")
+    
+    def test_update_rec(self):
+        """Update an existing Rec"""
+        # create a rec to update
+        test_rec = PetFactory()
+        resp = self.app.post(
+            BASE_URL, json=test_rec.serialize(), content_type=CONTENT_TYPE_JSON
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
+        # update the rec
+        new_rec = resp.get_json()
+        logging.debug(new_rec)
+        new_rec["category"] = "unknown"
+        resp = self.app.put(
+            "/recs/{}".format(new_rec["id"]),
+            json=new_rec,
+            content_type=CONTENT_TYPE_JSON,
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_rec = resp.get_json()
+        self.assertEqual(updated_rec["category"], "unknown")
 
     def test_get_pet_list(self):
         """Get a list of Recommendations"""

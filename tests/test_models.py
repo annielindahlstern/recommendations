@@ -67,6 +67,7 @@ class TestRecommendationModel(unittest.TestCase):
         # but the data did change
         recs = Rec.all()
         self.assertEqual(len(recs), 1)
+
         self.assertEqual(recs[0].id, 1)
         self.assertEqual(recs[0].reason, 2)
 
