@@ -1,5 +1,5 @@
 """
-Models for YourResourceModel
+Models for RecommendationModel
 All of the models are stored in this module
 """
 import logging
@@ -51,7 +51,7 @@ class RecommendationModel(db.Model):
 
     def create(self):
         """
-        Creates a YourResourceModel to the database
+        Creates a RecommendationModel to the database
         """
         logger.info("Creating Recommendation for %s", self.name)
         self.id = None  # id must be none to generate next primary key
@@ -60,24 +60,24 @@ class RecommendationModel(db.Model):
 
     def save(self):
         """
-        Updates a YourResourceModel to the database
+        Updates a RecommendationModel to the database
         """
         logger.info("Saving Recommendation for %s", self.name)
         db.session.commit()
 
     def delete(self):
-        """ Removes a YourResourceModel from the data store """
+        """ Removes a RecommendationModel from the data store """
         logger.info("Deleting Recommendation for %s", self.name)
         db.session.delete(self)
         db.session.commit()
 
     def serialize(self):
-        """ Serializes a YourResourceModel into a dictionary """
+        """ Serializes a RecommendationModel into a dictionary """
         return {"Recommendation id": self.id, "Product Name": self.name,"Product ID": self.prod_A_id,"Recommended Product Name": self.prod_B_name,"Recommended Product ID": self.prod_B_id, "Reason Enum" :self.reason}
 
     def deserialize(self, data):
         """ 
-        Deserializes a YourResourceModel from a dictionary
+        Deserializes a RecommendationModel from a dictionary
         Args:
             data (dict): A dictionary containing the resource data
         """
@@ -105,7 +105,7 @@ class RecommendationModel(db.Model):
 
     @classmethod
     def all(cls):
-        """ Returns all of the YourResourceModels in the database """
+        """ Returns all of the RecommendationModel in the database """
         logger.info("Processing all RecommendationModels")
         return cls.query.all()
 
@@ -123,9 +123,9 @@ class RecommendationModel(db.Model):
 
     @classmethod
     def find_by_name(cls, name):
-        """Returns all YourResourceModels with the given name
+        """Returns all RecommendationModel with the given name
         Args:
-            name (string): the name of the YourResourceModels you want to match
+            name (string): the name of the RecommendationModel you want to match
         """
         logger.info("Processing name query for %s ...", name)
         return cls.query.filter(cls.name == name)
