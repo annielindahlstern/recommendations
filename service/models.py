@@ -58,6 +58,15 @@ class RecommendationModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def update(self):
+        """
+        Updates a Pet to the database
+        """
+        logger.info("Saving %s", self.name)
+        if not self.id:
+            raise DataValidationError("Update called with empty ID field")
+        db.session.commit()
+
     def save(self):
         """
         Updates a RecommendationModel to the database
