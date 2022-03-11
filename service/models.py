@@ -73,23 +73,27 @@ class RecommendationModel(db.Model):
 
     def serialize(self):
         """ Serializes a YourResourceModel into a dictionary """
-        return {"Recommendation id": self.id, "Product Name": self.name,"Product ID": self.prod_A_id,"Recommended Product Name": self.prod_B_name,"Recommended Product ID": self.prod_B_id, "Reason Enum" :self.reason}
+        return {"id": self.id, "name": self.name,"prod_A_id": self.prod_A_id,"prod_B_name": self.prod_B_name,"prod_B_id": self.prod_B_id, "reason" :self.reason.name}
 
     def deserialize(self, data):
         """ 
-        Deserializes a YourResourceModel from a dictionary
+        Deserializes a Recommendation from a dictionary
         Args:
             data (dict): A dictionary containing the resource data
         """
         try:
             self.name = data["name"]
+            self.prod_A_id = data["prod_A_id"]
+            self.prod_B_name = data["prod_B_name"]
+            self.prod_B_id = data["prod_B_id"]
+            self.reason = getattr(Reason, data["reason"])  # create enum from string
+        except AttributeError as error:
+            raise DataValidationError("Invalid attribute: " + error.args[0])
         except KeyError as error:
-            raise DataValidationError(
-                "Invalid Recommendation: missing " + error.args[0]
-            )
+            raise DataValidationError("Invalid pet: missing " + error.args[0])
         except TypeError as error:
             raise DataValidationError(
-                "Invalid Recommendation: body of request contained bad or no data"
+                "Invalid pet: body of request contained bad or no data " + str(error)
             )
         return self
 
@@ -123,9 +127,45 @@ class RecommendationModel(db.Model):
 
     @classmethod
     def find_by_name(cls, name):
-        """Returns all YourResourceModels with the given name
+        """Returns all Recommendations with the given name
         Args:
             name (string): the name of the YourResourceModels you want to match
         """
         logger.info("Processing name query for %s ...", name)
         return cls.query.filter(cls.name == name)
+
+    @classmethod
+    def find_by_prod_A_id(cls, prod_A_id):
+        """Returns all Recommendations with the given original product ID
+        Args:
+            name (string): the ID of the original product you want to match
+        """
+        logger.info("Processing name query for %r ...", prod_A_id)
+        return cls.query.filter(cls.prod_A_id == prod_A_id)
+
+    @classmethod
+    def find_by_reason(cls, reason : Reason = Reason.OTHER):
+        """Returns all Recommendations with the given reason
+        Args:
+            name (string): the reason of the Recommendation you want to match
+        """
+        logger.info("Processing name query for %s ...", reason)
+        return cls.query.filter(cls.reason == reason)
+
+    @classmethod
+    def find_by_prod_B_id(cls, prod_B_id):
+        """Returns all Recommendations with the given recommended product ID (Product B)
+        Args:
+            name (string): the recommended product ID of the Recommendation you want to match
+        """
+        logger.info("Processing name query for %r ...", prod_B_id)
+        return cls.query.filter(cls.prod_B_id == prod_B_id)
+    
+    @classmethod
+    def find_by_prod_B_name(cls, prod_B_name):
+        """Returns all Recommendations with the given recommended product name (Product B)
+        Args:
+            name (string): the recommended product name of the Recommendation you want to match
+        """
+        logger.info("Processing name query for %r ...", prod_B_name)
+        return cls.query.filter(cls.prod_B_id == prod_B_name)
