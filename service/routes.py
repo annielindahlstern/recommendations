@@ -73,10 +73,10 @@ def init_db():
 # @app.route("/recommendations", methods=["POST"])
 # def create_recs():
 #     """
-#     Creates a Recommendations
-#     This endpoint will create a Pet based the data in the body that is posted
+#     Creates a Recommendation
+#     This endpoint will create a Recommendation based the data in the body that is posted
 #     """
-#     app.logger.info("Request to create a pet")
+#     app.logger.info("Request to create a Recommendation")
 #     check_content_type("application/json")
 #     rec = RecommendationModel()
 #     rec.deserialize(request.get_json())
