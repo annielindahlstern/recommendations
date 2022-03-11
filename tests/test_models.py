@@ -17,7 +17,7 @@ DATABASE_URI = os.getenv(
       "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
 )
 ######################################################################
-#  <your resource name>   M O D E L   T E S T   C A S E S
+#  R E C O M M E N D A T I O N   M O D E L   T E S T   C A S E S
 ######################################################################
 class TestRecommendationModel(unittest.TestCase):
     """ Test Cases for Recommendation Model """
@@ -49,6 +49,35 @@ class TestRecommendationModel(unittest.TestCase):
     ######################################################################
     #  T E S T   C A S E S
     ######################################################################
+
+    def test_update_a_recommendation(self):
+        """Update a Recommendation"""
+        rec = RecFactory()
+        logging.debug(rec)
+        rec.create()
+        logging.debug(rec)
+        self.assertEqual(rec.id, 1)
+        # Change it and save it
+        rec.reason = 2
+        original_id = rec.id
+        rec.update()
+        self.assertEqual(rec.id, original_id)
+        self.assertEqual(rec.reason, 2)
+        # Fetch it back and make sure the id hasn't changed
+        # but the data did change
+        recs = Rec.all()
+        self.assertEqual(len(recs), 1)
+        self.assertEqual(recs[0].id, 1)
+        self.assertEqual(recs[0].reason, 2)
+
+    def test_delete_a_rec(self):
+        """Delete a Recommendation"""
+        rec = RecFactory()
+        rec.create()
+        self.assertEqual(len(Rec.all()), 1)
+        # delete the rec and make sure it isn't in the database
+        rec.delete()
+        self.assertEqual(len(Rec.all()), 0)
 
     def test_create_a_recommendation(self):
         """ Create a recommendation and assert that it exists """
