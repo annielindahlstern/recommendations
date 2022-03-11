@@ -21,7 +21,7 @@ from service.models import Reason, RecommendationModel
 
 
 
-class RecsFactory(factory.Factory):
+class RecFactory(factory.Factory):
     """Creates fake recommendations"""
 
 
