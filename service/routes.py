@@ -39,28 +39,27 @@ def index():
 ######################################################################
 # UPDATE AN EXISTING REC
 ######################################################################
-@app.route("/recs/<int:rec_id>", methods=["PUT"])
-def update_recs(rec_id):
-    """
-    Update a Rec
-    This endpoint will update a Rec based the body that is posted
-    """
-    app.logger.info("Request to update rec with id: %s", rec_id)
-    check_content_type("application/json")
-    rec = Rec.find(rec_id)
-    if not rec:
-        raise NotFound("Rec with id '{}' was not found.".format(rec_id))
-    rec.deserialize(request.get_json())
-    rec.id = rec_id
-    rec.update()
+# @app.route("/recs/<int:rec_id>", methods=["PUT"])
+# def update_recs(rec_id):
+#     """
+#     Update a Rec
+#     This endpoint will update a Rec based the body that is posted
+#     """
+#     app.logger.info("Request to update rec with id: %s", rec_id)
+#     check_content_type("application/json")
+#     rec = Rec.find(rec_id)
+#     if not rec:
+#         raise NotFound("Rec with id '{}' was not found.".format(rec_id))
+#     rec.deserialize(request.get_json())
+#     rec.id = rec_id
+#     rec.update()
 
-    app.logger.info("Rec with ID [%s] updated.", rec.id)
-    return make_response(jsonify(rec.serialize()), status.HTTP_200_OK)
+#     app.logger.info("Rec with ID [%s] updated.", rec.id)
+#     return make_response(jsonify(rec.serialize()), status.HTTP_200_OK)
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
-
 
 def init_db():
     """ Initializes the SQLAlchemy app """
@@ -68,29 +67,40 @@ def init_db():
     RecommendationModel.init_db(app)
 
 
-    ######################################################################
-# LIST ALL RECOMMENDATIONS
 ######################################################################
-@app.route("/recs", methods=["GET"])
-def list_recs():
-    """Returns all of the Recommendations"""
-    app.logger.info("Request for recommendation list")
-    recs = []
-    prod_A_id = request.args.get("prod_A_id")
-    prod_B_id = request.args.get("prod_B_id")
-    prod_B_name = request.args.get("prod_B_name")
-    name = request.args.get("name")
-    if prod_A_id:
-        recs = RecommendationModel.find_by_prod_A_id(prod_A_id)
-    elif name:
-        recs = RecommendationModel.find_by_name(name)
-    elif prod_B_id:
-        recs = RecommendationModel.find_by_prod_B_id(prod_B_id)
-    elif prod_B_name:
-        recs = RecommendationModel.find_by_prod_B_name(prod_B_name)
-    else:
-        recs = RecommendationModel.all()
+# ADD A NEW PET
+######################################################################
+# @app.route("/recommendations", methods=["POST"])
+# def create_recs():
+#     """
+#     Creates a Recommendations
+#     This endpoint will create a Pet based the data in the body that is posted
+#     """
+#     app.logger.info("Request to create a pet")
+#     check_content_type("application/json")
+#     rec = RecommendationModel()
+#     rec.deserialize(request.get_json())
+#     rec.create()
+#     message = rec.serialize()
+#     location_url = url_for("get_recs", rec_id=rec.id, _external=True)
 
-    results = [rec.serialize() for rec in recs]
-    app.logger.info("Returning %d recommendation", len(results))
-    return make_response(jsonify(results), status.HTTP_200_OK)
+#     app.logger.info("Recommendations with ID [%s] created.", rec.id)
+#     return make_response(
+#         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
+#     )
+
+######################################################################
+#  U T I L I T Y   F U N C T I O N S
+######################################################################
+
+
+def check_content_type(media_type):
+    """Checks that the media type is correct"""
+    content_type = request.headers.get("Content-Type")
+    if content_type and content_type == media_type:
+        return
+    app.logger.error("Invalid Content-Type: %s", content_type)
+    abort(
+        status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+        "Content-Type must be {}".format(media_type),
+    )
