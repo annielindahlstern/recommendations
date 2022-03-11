@@ -52,7 +52,7 @@ class TestRecommendationModel(unittest.TestCase):
 
     def test_update_a_recommendation(self):
         """Update a Recommendation"""
-        rec = RecFactory()
+        rec = RecsFactory()
         logging.debug(rec)
         rec.create()
         logging.debug(rec)
@@ -65,7 +65,7 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(rec.reason, 2)
         # Fetch it back and make sure the id hasn't changed
         # but the data did change
-        recs = Rec.all()
+        recs = RecommendationModel.all()
         self.assertEqual(len(recs), 1)
 
         self.assertEqual(recs[0].id, 1)
@@ -73,12 +73,12 @@ class TestRecommendationModel(unittest.TestCase):
 
     def test_delete_a_rec(self):
         """Delete a Recommendation"""
-        rec = RecFactory()
+        rec = RecsFactory()
         rec.create()
-        self.assertEqual(len(Rec.all()), 1)
+        self.assertEqual(len(RecommendationModel.all()), 1)
         # delete the rec and make sure it isn't in the database
         rec.delete()
-        self.assertEqual(len(Rec.all()), 0)
+        self.assertEqual(len(RecommendationModel.all()), 0)
 
     def test_create_a_recommendation(self):
         """ Create a recommendation and assert that it exists """
