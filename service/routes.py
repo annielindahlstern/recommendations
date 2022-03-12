@@ -91,6 +91,30 @@ def create_recs():
     #)
 
 ######################################################################
+# LIST ALL PETS
+######################################################################
+@app.route("/recommendations", methods=["GET"])
+def list_recs():
+    """
+    Lists all Recommendations
+    This endpoint will list all recommendations in the database.
+    """
+    app.logger.info("Request to list all recommendations")
+    check_content_type("application/json")
+    
+    all_recs = RecommendationModel.all()
+    app.logger.info("Fetched [%i] recs.", len(all_recs))
+
+    data = []
+    for rec in all_recs:
+        data.append(rec.serialize())
+
+    if data == []:
+        return make_response('', status.HTTP_204_NO_CONTENT)
+    else:
+        return make_response(jsonify(data), status.HTTP_200_OK)
+
+######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
 
