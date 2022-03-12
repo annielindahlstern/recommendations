@@ -83,6 +83,41 @@ class TestYourRecommendationServer(unittest.TestCase):
     ######################################################################
     #  P L A C E   T E S T   C A S E S   H E R E
     ######################################################################
+
+    def test_list_recs_empty(self):
+        """Test for an empty list"""
+        test_rec = RecFactory()
+        logging.debug(test_rec)
+        resp = self.app.get(BASE_URL, content_type=CONTENT_TYPE_JSON)
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+        empty_response = resp.get_json()
+        # There should be no recs
+        self.assertIsNone(empty_response)
+
+    def test_list_single_recs(self):
+        """Test for a list with one rec"""
+        test_rec = RecFactory()
+        logging.debug(test_rec)
+        self._create_recs(1)
+
+        resp = self.app.get(BASE_URL, content_type=CONTENT_TYPE_JSON)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        rec_list = resp.get_json()
+        # There should be one rec
+        self.assertEqual(len(rec_list), 1)
+
+    def test_list_three_recs(self):
+        """Test for a list with three recs"""
+        test_rec = RecFactory()
+        logging.debug(test_rec)
+        self._create_recs(3)
+
+        resp = self.app.get(BASE_URL, content_type=CONTENT_TYPE_JSON)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        rec_list = resp.get_json()
+        # There should be three recs
+        self.assertEqual(len(rec_list), 3)
+
     #ef test_index(self):
     #   """Test the Home Page"""
     #   resp = self.app.get("/")
