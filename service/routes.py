@@ -84,6 +84,7 @@ def create_recs():
     message = rec.serialize()
     # location_url = url_for("get_recs", rec_id=rec.id, _external=True)
 
+
     app.logger.info("Recommendations with ID [%s] created.", rec.id)
     return make_response(
         jsonify(message), status.HTTP_201_CREATED) #, {"Location": location_url}
