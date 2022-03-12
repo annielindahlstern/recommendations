@@ -91,46 +91,46 @@ class TestYourRecommendationServer(unittest.TestCase):
     #   self.assertEqual(data["name"], "Recommendation Demo REST API Service")
     
     
-    # def test_create_rec(self):
-    #     """Create a new Pet"""
-    #     test_rec = RecFactory()
-    #     logging.debug(test_rec)
-    #     resp = self.app.post(
-    #         BASE_URL, json=test_rec.serialize(), content_type=CONTENT_TYPE_JSON
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
-    #     # Make sure location header is set
-    #     location = resp.headers.get("Location", None)
-    #     self.assertIsNotNone(location)
-    #     # Check the data is correct
-    #     new_rec = resp.get_json()
-    #     self.assertEqual(new_rec["name"], test_rec.name, "Names do not match")
-    #     self.assertEqual(
-    #         new_rec["prod_A_id"], test_rec.prod_A_id, "Product A IDs do not match"
-    #     )
-    #     self.assertEqual(
-    #         new_rec["prod_B_id"], test_rec.prod_B_id, "Product B IDs do not match"
-    #     )
-    #     self.assertEqual(
-    #         new_rec["prod_B_name"], test_rec.prod_B_name, "Product B names does not match"
-    #     )
-    #     self.assertEqual(
-    #         new_rec["reason"], test_rec.reason.name, "Reasons does not match"
-    #     )
-    #     # Check that the location header was correct
-    #     resp = self.app.get(location, content_type=CONTENT_TYPE_JSON)
-    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #     new_rec = resp.get_json()
-    #     self.assertEqual(new_rec["name"], test_rec.name, "Names do not match")
-    #     self.assertEqual(
-    #         new_rec["prod_A_id"], test_rec.prod_A_id, "Product A IDs do not match"
-    #     )
-    #     self.assertEqual(
-    #         new_rec["prod_B_id"], test_rec.prod_B_id, "Product B IDs do not match"
-    #     )
-    #     self.assertEqual(
-    #         new_rec["prod_B_name"], test_rec.prod_B_name, "Product B names does not match"
-    #     )
-    #     self.assertEqual(
-    #         new_rec["reason"], test_rec.reason.name, "Reasons does not match"
-    #     )
+    def test_create_rec(self):
+        """Create a new Pet"""
+        test_rec = RecFactory()
+        logging.debug(test_rec)
+        resp = self.app.post(
+            BASE_URL, json=test_rec.serialize(), content_type=CONTENT_TYPE_JSON
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        # Make sure location header is set
+        # location = resp.headers.get("Location", None)
+        # self.assertIsNotNone(location)
+        # Check the data is correct
+        new_rec = resp.get_json()
+        self.assertEqual(new_rec["name"], test_rec.name, "Names do not match")
+        self.assertEqual(
+            new_rec["prod_A_id"], test_rec.prod_A_id, "Product A IDs do not match"
+        )
+        self.assertEqual(
+            new_rec["prod_B_id"], test_rec.prod_B_id, "Product B IDs do not match"
+        )
+        self.assertEqual(
+            new_rec["prod_B_name"], test_rec.prod_B_name, "Product B names does not match"
+        )
+        self.assertEqual(
+            new_rec["reason"], test_rec.reason.name, "Reasons does not match"
+        )
+        # Check that the location header was correct
+        # resp = self.app.get(location, content_type=CONTENT_TYPE_JSON)
+        # self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        new_rec = resp.get_json()
+        self.assertEqual(new_rec["name"], test_rec.name, "Names do not match")
+        self.assertEqual(
+            new_rec["prod_A_id"], test_rec.prod_A_id, "Product A IDs do not match"
+        )
+        self.assertEqual(
+            new_rec["prod_B_id"], test_rec.prod_B_id, "Product B IDs do not match"
+        )
+        self.assertEqual(
+            new_rec["prod_B_name"], test_rec.prod_B_name, "Product B names does not match"
+        )
+        self.assertEqual(
+            new_rec["reason"], test_rec.reason.name, "Reasons does not match"
+        )
