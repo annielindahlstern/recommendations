@@ -67,27 +67,51 @@ def init_db():
     RecommendationModel.init_db(app)
 
 
-######################################################################
+#####################################################################
 # ADD A NEW PET
-######################################################################
-# @app.route("/recommendations", methods=["POST"])
-# def create_recs():
-#     """
-#     Creates a Recommendation
-#     This endpoint will create a Recommendation based the data in the body that is posted
-#     """
-#     app.logger.info("Request to create a Recommendation")
-#     check_content_type("application/json")
-#     rec = RecommendationModel()
-#     rec.deserialize(request.get_json())
-#     rec.create()
-#     message = rec.serialize()
-#     location_url = url_for("get_recs", rec_id=rec.id, _external=True)
+#####################################################################
+@app.route("/recommendations", methods=["POST"])
+def create_recs():
+    """
+    Creates a Recommendations
+    This endpoint will create a Pet based the data in the body that is posted
+    """
+    app.logger.info("Request to create a pet")
+    check_content_type("application/json")
+    rec = RecommendationModel()
+    rec.deserialize(request.get_json())
+    rec.create()
+    message = rec.serialize()
+    # location_url = url_for("get_recs", rec_id=rec.id, _external=True)
 
-#     app.logger.info("Recommendations with ID [%s] created by Corey on the third attempt.", rec.id)
-#     return make_response(
-#         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
-#     )
+
+    app.logger.info("Recommendations with ID [%s] created.", rec.id)
+    return make_response(
+        jsonify(message), status.HTTP_201_CREATED) #, {"Location": location_url}
+    #)
+
+# LIST ALL PETS
+######################################################################
+@app.route("/recommendations", methods=["GET"])
+def list_recs():
+    """
+    Lists all Recommendations
+    This endpoint will list all recommendations in the database.
+    """
+    app.logger.info("Request to list all recommendations")
+    check_content_type("application/json")
+    
+    all_recs = RecommendationModel.all()
+    app.logger.info("Fetched [%i] recs.", len(all_recs))
+
+    data = []
+    for rec in all_recs:
+        data.append(rec.serialize())
+
+    if data == []:
+        return make_response('', status.HTTP_204_NO_CONTENT)
+    else:
+        return make_response(jsonify(data), status.HTTP_200_OK)
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
