@@ -90,7 +90,6 @@ def create_recs():
         jsonify(message), status.HTTP_201_CREATED) #, {"Location": location_url}
     #)
 
-######################################################################
 # LIST ALL PETS
 ######################################################################
 @app.route("/recommendations", methods=["GET"])
@@ -129,3 +128,20 @@ def check_content_type(media_type):
         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
         "Content-Type must be {}".format(media_type),
     )
+
+######################################################################
+# RETRIEVE A PET
+######################################################################
+@app.route("/recommendations/<int:recommendations_id>", methods=["GET"])
+def get_recommendation(recommendations_id):
+    """
+    Retrieve a single recommendation
+    This endpoint will return a recommendation based on it's id
+    """
+    app.logger.info("Request for recommendation with id: %s", recommendations_id)
+    recommendation = RecommendationModel.find(recommendations_id)
+    if not recommendation:
+        raise NotFound("Pet with id '{}' was not found.".format(recommendations_id))
+
+    app.logger.info("Returning recommendation: %s", recommendation.name)
+    return make_response(jsonify(recommendation.serialize()), status.HTTP_200_OK)
