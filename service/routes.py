@@ -22,19 +22,19 @@ from service.models import RecommendationModel, DataValidationError
 ######################################################################
 # GET INDEX
 ######################################################################
-# @app.route("/")
-# def index():
+@app.route("/")
+def index():
 
-#    """Root URL response"""
-#    app.logger.info("Request for Root URL")
-#    return (
-#        jsonify(
-#            name="Recommendation Demo REST API Service",
-#            version="1.0",
-#            paths=url_for("list_recs", _external=True),
-#        ),
-#        status.HTTP_200_OK,
-#    )
+   """Root URL response"""
+   app.logger.info("Request for Root URL")
+   return (
+       jsonify(
+           name="Recommendation Demo REST API Service",
+           version="1.0",
+           paths=url_for("list_recs", _external=True),
+       ),
+       status.HTTP_200_OK,
+   )
 
 ######################################################################
 # UPDATE AN EXISTING REC
@@ -82,13 +82,13 @@ def create_recs():
     rec.deserialize(request.get_json())
     rec.create()
     message = rec.serialize()
-    # location_url = url_for("get_recs", rec_id=rec.id, _external=True)
+    location_url = url_for("get_recommendation", recommendations_id=rec.id, _external=True)
 
 
     app.logger.info("Recommendations with ID [%s] created.", rec.id)
     return make_response(
-        jsonify(message), status.HTTP_201_CREATED) #, {"Location": location_url}
-    #)
+        jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
+    )
 
 # LIST ALL PETS
 ######################################################################

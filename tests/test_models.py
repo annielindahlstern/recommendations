@@ -50,26 +50,25 @@ class TestRecommendationModel(unittest.TestCase):
     #  T E S T   C A S E S
     ######################################################################
 
-    # def test_update_a_recommendation(self):
-    #     """Update a Recommendation"""
-    #     rec = RecFactory()
-    #     logging.debug(rec)
-    #     rec.create()
-    #     logging.debug(rec)
-    #     self.assertEqual(rec.id, 1)
-    #     # Change it and save it
-    #     rec.reason = Reason.UP_SELL
-    #     original_id = rec.id
-    #     rec.update()
-    #     self.assertEqual(rec.id, original_id)
-    #     self.assertEqual(rec.reason, Reason.UP_SELL)
-    #     # Fetch it back and make sure the id hasn't changed
-    #     # but the data did change
-    #     recs = RecommendationModel.all()
-    #     self.assertEqual(len(recs), Reason.UP_SELL)
-
-    #     self.assertEqual(recs[0].id, 1)
-    #     self.assertEqual(recs[0].reason, Reason.UP_SELL)
+    def test_update_a_recommendation(self):
+        """Update a Recommendation"""
+        rec = RecFactory()
+        logging.debug(rec)
+        rec.create()
+        logging.debug(rec)
+        self.assertEqual(rec.id, 1)
+        # Change it and save it
+        rec.reason = Reason.UP_SELL
+        original_id = rec.id
+        rec.update()
+        self.assertEqual(rec.id, original_id)
+        self.assertEqual(rec.reason, Reason.UP_SELL)
+        # Fetch it back and make sure the id hasn't changed
+        # but the data did change
+        recs = RecommendationModel.all()
+        self.assertEqual(len(recs), 1)
+        self.assertEqual(recs[0].id, 1)
+        self.assertEqual(recs[0].reason, Reason.UP_SELL)
 
     def test_delete_a_rec(self):
         """Delete a Recommendation"""
