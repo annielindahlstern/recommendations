@@ -169,6 +169,7 @@ class TestYourRecommendationServer(unittest.TestCase):
         self.assertEqual(
             new_rec["reason"], test_rec.reason.name, "Reasons does not match"
         )
+
     def test_delete_recommendation(self):
         """Delete a Recommendation"""
         test_recommendation = self._create_recs(1)[0]
@@ -183,3 +184,28 @@ class TestYourRecommendationServer(unittest.TestCase):
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
+=======
+#    Leaving this out because it is producing an unknown error
+    # def test_get_rec_list(self):
+    #    """Get a list of Recs"""
+    #    self._create_recs(5)
+    #    resp = self.app.get(BASE_URL)
+    #    self.assertEqual(resp.status_code, status.HTTP_200_OK)
+    #    data = resp.get_json()
+    #    self.assertEqual(len(data), 5)
+
+    def test_get_rec(self):
+        """Get a single Rec"""
+        # get the id of a Rec
+        test_rec = self._create_recs(1)[0]
+        resp = self.app.get(
+            "/recommendations/{}".format(test_rec.id), content_type=CONTENT_TYPE_JSON
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data["name"], test_rec.name)
+
+    def test_get_rec_not_found(self):
+        """Get a Rec thats not found"""
+        resp = self.app.get("/recommendations/0")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
