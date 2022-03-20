@@ -145,3 +145,19 @@ def get_recommendation(recommendations_id):
 
     app.logger.info("Returning recommendation: %s", recommendation.name)
     return make_response(jsonify(recommendation.serialize()), status.HTTP_200_OK)
+######################################################################
+# DELETE A RECOMMENDATION
+######################################################################
+@app.route("/recommendations/<int:recommendations_id>", methods=["DELETE"])
+def delete_recommendations(recommendations_id):
+    """Delete a Recommendations
+        This endpoint will delete a Recommendations based the id specified in the path
+    """
+    app.logger.info("Request to delete Recommendations with id: %s", recommendations_id)
+    recommendations = RecommendationModel.find(recommendations_id)
+    if recommendations:
+        recommendations.delete()
+
+    app.logger.info("Recommendations with ID [%s] delete complete.", recommendations_id)
+    return make_response("", status.HTTP_204_NO_CONTENT)
+
