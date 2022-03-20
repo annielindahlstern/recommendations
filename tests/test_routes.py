@@ -127,7 +127,7 @@ class TestYourRecommendationServer(unittest.TestCase):
     
     
     def test_create_rec(self):
-        """Create a new Pet"""
+        """Create a new Recommendation"""
         test_rec = RecFactory()
         logging.debug(test_rec)
         resp = self.app.post(
@@ -135,8 +135,8 @@ class TestYourRecommendationServer(unittest.TestCase):
         )
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         # Make sure location header is set
-        # location = resp.headers.get("Location", None)
-        # self.assertIsNotNone(location)
+        location = resp.headers.get("Location", None)
+        self.assertIsNotNone(location)
         # Check the data is correct
         new_rec = resp.get_json()
         self.assertEqual(new_rec["name"], test_rec.name, "Names do not match")
@@ -153,8 +153,8 @@ class TestYourRecommendationServer(unittest.TestCase):
             new_rec["reason"], test_rec.reason.name, "Reasons does not match"
         )
         # Check that the location header was correct
-        # resp = self.app.get(location, content_type=CONTENT_TYPE_JSON)
-        # self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        resp = self.app.get(location, content_type=CONTENT_TYPE_JSON)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
         new_rec = resp.get_json()
         self.assertEqual(new_rec["name"], test_rec.name, "Names do not match")
         self.assertEqual(
