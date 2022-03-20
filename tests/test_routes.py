@@ -184,7 +184,6 @@ class TestYourRecommendationServer(unittest.TestCase):
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
-=======
 #    Leaving this out because it is producing an unknown error
     # def test_get_rec_list(self):
     #    """Get a list of Recs"""
