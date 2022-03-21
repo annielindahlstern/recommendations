@@ -19,7 +19,7 @@ import unittest
 # from unittest.mock import MagicMock, patch
 from urllib.parse import quote_plus
 from service import app, status
-from service.models import Reason, RecommendationModel, db
+from service.models import DataValidationError, Reason, RecommendationModel, db
 from .factories import RecFactory
 
 # Disable all but critical errors during normal test run
@@ -66,7 +66,7 @@ class TestYourRecommendationServer(unittest.TestCase):
 
 
     def _create_recs(self, count):
-        """Factory method to create pets in bulk"""
+        """Factory method to create recommendations in bulk"""
         recs = []
         for _ in range(count):
             test_rec = RecFactory()
@@ -208,3 +208,14 @@ class TestYourRecommendationServer(unittest.TestCase):
         """Get a Rec thats not found"""
         resp = self.app.get("/recommendations/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+
+    def test_create_rec_no_data(self):
+        """Create a Rec with missing data"""
+        resp = self.app.post(BASE_URL, json={}, content_type=CONTENT_TYPE_JSON)
+        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_rec_no_content_type(self):
+        """Create a Rec with no content type"""
+        resp = self.app.post(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
