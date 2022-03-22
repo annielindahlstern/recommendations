@@ -58,7 +58,7 @@ class RecommendationModel(db.Model):
 
     def update(self):
         """
-        Updates a Pet to the database
+        Updates a Recommendation to the database
         """
         logger.info("Saving %s", self.name)
         if not self.id:
@@ -97,10 +97,10 @@ class RecommendationModel(db.Model):
         except AttributeError as error:
             raise DataValidationError("Invalid attribute: " + error.args[0]) from error
         except KeyError as error:
-            raise DataValidationError("Invalid pet: missing " + error.args[0]) from error
+            raise DataValidationError("Invalid recommendation: missing " + error.args[0]) from error
         except TypeError as error:
             raise DataValidationError(
-                "Invalid pet: body of request contained bad or no data " + str(error)
+                "Invalid recommendation: body of request contained bad or no data " + str(error)
             ) from error
         return self
 
@@ -176,4 +176,4 @@ class RecommendationModel(db.Model):
             name (string): the recommended product name of the Recommendation you want to match
         """
         logger.info("Processing name query for %r ...", recommendation_product_name)
-        return cls.query.filter(cls.recommendation_product_id == recommendation_product_name)
+        return cls.query.filter(cls.recommendation_product_name == recommendation_product_name)

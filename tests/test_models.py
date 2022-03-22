@@ -195,7 +195,7 @@ class TestRecommendationModel(unittest.TestCase):
         logging.debug(recs)
         # make sure they got saved
         self.assertEqual(len(RecommendationModel.all()), 3)
-        # find the 2nd pet in the list
+        # find the 2nd recommendation in the list
         rec = RecommendationModel.find(recs[1].id)
         self.assertIsNot(rec, None)
         self.assertEqual(rec.id, recs[1].id)
@@ -304,20 +304,20 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(recs[0].original_product_id, 1)
         self.assertEqual(recs[0].reason, Reason.ACCESSORY)
 
-    def test_find_by_prod_B_name(self):
+    def test_find_by_recommendation_product_name(self):
         """Find Recommendations by product_B_name"""
-        RecommendationModel(name="iPhone", prod_A_id=1, prod_B_name="AirPods", prod_B_id=10, reason = Reason.ACCESSORY).create()
-        RecommendationModel(name="Radio", prod_A_id=2, prod_B_name="Batteries", prod_B_id=6, reason = Reason.CROSS_SELL).create()
-        recs = RecommendationModel.find_by_prod_B_name("AirPods")
-        self.assertEqual(recs[0].prod_B_name, "AirPods")
+        RecommendationModel(name="iPhone", original_product_id=1, recommendation_product_name="AirPods", recommendation_product_id=10, reason = Reason.ACCESSORY).create()
+        RecommendationModel(name="Radio", original_product_id=2, recommendation_product_name="Batteries", recommendation_product_id=6, reason = Reason.CROSS_SELL).create()
+        recs = RecommendationModel.find_by_recommendation_product_name("AirPods")
+        self.assertEqual(recs[0].recommendation_product_name, "AirPods")
         self.assertEqual(recs[0].name, "iPhone")
-        self.assertEqual(recs[0].prod_A_id, 1)
+        self.assertEqual(recs[0].original_product_id, 1)
         self.assertEqual(recs[0].reason, Reason.ACCESSORY)
 
     def test_repr(self):
         """Test repr"""
-        RecommendationModel(name="iPhone", prod_A_id=1, prod_B_name="AirPods", prod_B_id=10, reason = Reason.ACCESSORY).create()
-        model = RecommendationModel.find_by_prod_B_name("AirPods")[0]
+        RecommendationModel(name="iPhone", original_product_id=1, recommendation_product_name="AirPods", recommendation_product_id=10, reason = Reason.ACCESSORY).create()
+        model = RecommendationModel.find_by_recommendation_product_name("AirPods")[0]
         self.assertEqual(repr(model), "<Recommendation 'iPhone' id=[1]>")
 
     def test_find_or_404_found(self):
