@@ -31,9 +31,9 @@ class RecFactory(factory.Factory):
     id = factory.Sequence(lambda n: n)
     
     name = factory.Faker("first_name")
-    prod_A_id = factory.Sequence(lambda n: n)
+    original_product_id = factory.Sequence(lambda n: n)
 
-    prod_B_name = factory.Faker("first_name")
-    prod_B_id = factory.Sequence(lambda n: n)
+    recommendation_product_name = factory.Faker("first_name")
+    recommendation_product_id = factory.Sequence(lambda n: n)
 
     reason = FuzzyChoice(choices=[Reason.CROSS_SELL , Reason.UP_SELL , Reason.ACCESSORY, Reason.OTHER])
