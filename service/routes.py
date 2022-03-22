@@ -2,11 +2,11 @@
 The recommendations resource is a representation a product recommendation based on
 another product. In essence it is just a relationship between two products that "go
 together" (e.g., radio and batteries, printers and ink, shirts and pants, etc.).
-GET /pets - Returns a list all of the Pets
-GET /pets/{id} - Returns the Pet with a given id number
-POST /pets - creates a new Pet record in the database
-PUT /pets/{id} - updates a Pet record in the database
-DELETE /pets/{id} - deletes a Pet record in the database
+GET /recommendations - Returns a list all of the recommendations
+GET /recommendations/{id} - Returns the Recommendation with a given id number
+POST /recommendations - creates a new Recommendation record in the database
+PUT /recommendations/{id} - updates a Recommendation record in the database
+DELETE /recommendations/{id} - deletes a Recommendation record in the database
 """
 
 from flask import jsonify, request, url_for, make_response, abort
@@ -67,15 +67,15 @@ def init_db():
 
 
 #####################################################################
-# ADD A NEW PET
+# ADD A NEW RECOMMENDATION
 #####################################################################
 @app.route("/recommendations", methods=["POST"])
 def create_recs():
     """
     Creates a Recommendations
-    This endpoint will create a Pet based the data in the body that is posted
+    This endpoint will create a Recommendation based the data in the body that is posted
     """
-    app.logger.info("Request to create a pet")
+    app.logger.info("Request to create a recommendation")
     check_content_type("application/json")
     rec = RecommendationModel()
     rec.deserialize(request.get_json())
@@ -89,7 +89,7 @@ def create_recs():
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
 
-# LIST ALL PETS
+# LIST ALL RECOMMENDATIONS
 ######################################################################
 @app.route("/recommendations", methods=["GET"])
 def list_recs():
@@ -129,7 +129,7 @@ def check_content_type(media_type):
     )
 
 ######################################################################
-# RETRIEVE A PET
+# RETRIEVE A RECOMMENDATION
 ######################################################################
 @app.route("/recommendations/<int:recommendations_id>", methods=["GET"])
 def get_recommendation(recommendations_id):
@@ -140,7 +140,7 @@ def get_recommendation(recommendations_id):
     app.logger.info("Request for recommendation with id: %s", recommendations_id)
     recommendation = RecommendationModel.find(recommendations_id)
     if not recommendation:
-        raise NotFound("Pet with id '{}' was not found.".format(recommendations_id))
+        raise NotFound("Recommendation with id '{}' was not found.".format(recommendations_id))
 
     app.logger.info("Returning recommendation: %s", recommendation.name)
     return make_response(jsonify(recommendation.serialize()), status.HTTP_200_OK)

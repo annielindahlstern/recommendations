@@ -7,7 +7,7 @@ Test cases can be run with the following:
   coverage report -m
   codecov --token=$CODECOV_TOKEN
   While debugging just these tests it's convenient to use this:
-    nosetests --stop tests/test_service.py:TestPetServer
+    nosetests --stop tests/test_service.py:TestRecommendationServer
 """
 
 import os
@@ -226,7 +226,7 @@ class TestYourRecommendationServer(unittest.TestCase):
         )
         error_response = resp.get_json()
         self.assertEqual(error_response["error"], "Bad Request")
-        self.assertEqual(error_response["message"], "Invalid pet: body of request contained bad or no data string indices must be integers")
+        self.assertEqual(error_response["message"], "Invalid recommendation: body of request contained bad or no data string indices must be integers")
         self.assertEqual(error_response["status"], 400)
 
     def test_recs_not_found(self):

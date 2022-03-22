@@ -195,7 +195,7 @@ class TestRecommendationModel(unittest.TestCase):
         logging.debug(recs)
         # make sure they got saved
         self.assertEqual(len(RecommendationModel.all()), 3)
-        # find the 2nd pet in the list
+        # find the 2nd recommendation in the list
         rec = RecommendationModel.find(recs[1].id)
         self.assertIsNot(rec, None)
         self.assertEqual(rec.id, recs[1].id)
