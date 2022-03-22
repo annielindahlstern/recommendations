@@ -1,79 +1,32 @@
 # recommendations
 
-# lab-flask-tdd
-
-
 [![Build Status](https://github.com/Recommendations-DevOps/recommendations/actions/workflows/workflow.yml/badge.svg)](https://github.com/Recommendations-DevOps/recommendations/actions)
 [![Codecov](https://codecov.io/gh/Recommendations-DevOps/recommendations/branch/master/graph/badge.svg)](https://codecov.io/gh/Recommendations-DevOps/recommendations/branch/master/graph/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-NYU DevOps lab on **Test Driven Development**
+## Available calls and inputs
+create_recs  """Creates a Recommendation - This endpoint will create a Recommendation based the data in the body that is posted"""
+list_recs """ Lists all Recommendations - This endpoint will list all recommendations in the database."""
+def check_content_type(media_type):     """Checks that the media type is correct"""
+get_recommendation  """Retrieve a single recommendation - This endpoint will return a recommendation based on it's id"""
+delete_recommendations  """Delete a Recommendations - This endpoint will delete a Recommendations based the id specified in the path"""
 
-## Introduction
+init_db         """ Initializes the database session """
+all         """ Returns all of the RecommendationModel in the database """
+find         """ Finds a YourResourceModel by it's ID """
+find_or_404         """ Find a YourResourceModel by it's id """
+find_by_name         """Returns all Recommendations with the given name
+find_by_original_product_id """Returns all Recommendations with the given original product ID"""
+find_by_reason         """Returns all Recommendations with the given reason"""
+    """Enumeration of Potential Reasons"""
 
-One of my favorite quotes is:
+       CROSS_SELL = 0
+       UP_SELL = 1
+       ACCESSORY = 2
+       OTHER  = 3
 
-_“If it's worth building, it's worth testing.
-If it's not worth testing, why are you wasting your time working on it?”_
-
-As Software Engineers we need to have the discipline to ensure that our code works as expected and continues to do so regardless of any changes, refactoring, or the introduction of new functionality.
-
-You can read more about my thoughts on TDD in the article: [A Case for Test Driven Development](https://johnrofrano.medium.com/a-case-for-test-driven-development-7d9a552e0a16)
-
-This lab introduces **Test Driven Development** using `PyUnit` and `nose` (a.k.a. `nosetests`). It also demonstrates how to create a simple RESTful service using Python Flask and PostgreSQL. The resource model is persistences using SQLAlchemy to keep the application simple. It's purpose is to show the correct API calls and return codes that should be used for a REST API.
-
-**Note:** The base service code is contained in `routes.py` while the business logic for manipulating Pets is in the `models.py` file. This follows the popular Model View Controller (MVC) separation of duities by keeping the model separate from the controller. As such, we have two test suites: one for the model (`test_models.py`) and one for the service itself (`test_routes.py`)
-
-## Prerequisite Software Installation
-
-This lab uses Docker and Visual Studio Code with the Remote Containers extension to provide a consistent repeatable disposable development environment for all of the labs in this course.
-
-You will need the following software installed:
-
-- [Docker Desktop](https://www.docker.com/products/docker-desktop)
-- [Visual Studio Code](https://code.visualstudio.com)
-- [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension from the Visual Studio Marketplace
-
-All of these can be installed manually by clicking on the links above or you can use a package manager like **Homebrew** on Mac of **Chocolatey** on Windows.
-
-Alternately, you can use [Vagrant](https://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/) to create a consistent development environment in a virtual machine (VM). 
-
-You can read more about creating these environments in my article: [Creating Reproducable Development Environments](https://johnrofrano.medium.com/creating-reproducible-development-environments-fac8d6471f35)
-
-## Bring up the development environment
-
-To bring up the development environment you should clone this repo, change into the repo directory:
-
-```bash
-$ git clone https://github.com/nyu-devops/lab-flask-tdd.git
-$ cd lab-flask-tdd
-```
-
-Depending on which development environment you created, pick from the following:
-
-### Start developing with Visual Studio Code and Docker
-
-Open Visual Studio Code using the `code .` command. VS Code will prompt you to reopen in a container and you should say **yes**. This will take a while as it builds the Docker image and creates a container from it to develop in.
-
-```bash
-$ code .
-```
-
-Note that there is a period `.` after the `code` command. This tells Visual Studio Code to open the editor and load the current folder of files.
-
-Once the environment is loaded you should be placed at a `bash` prompt in the `/app` folder inside of the development container. This folder is mounted to the current working directory of your repository on your computer. This means that any file you edit while inside of the `/app` folder in the container is actually being edited on your computer. You can then commit your changes to `git` from either inside or outside of the container.
-
-### Using Vagrant and VirtualBox
-
-Bring up the virtual machine using Vagrant.
-
-```shell
-$ vagrant up
-$ vagrant ssh
-$ cd /vagrant
-```
-
-This will place you in the virtual machine in the `/vagrant` folder which has been shared with your computer so that your source files can be edited outside of the VM and run inside of the VM.
+find_by_recommendation_product_id         """Returns all Recommendations with the given recommendation product ID"""
+find_by_recommendation_product_name         """Returns all Recommendations with the given recommendation product name"""
 
 ## Running the tests
 
@@ -123,7 +76,7 @@ You should be able to reach the service at: http://localhost:8000. The port that
 
 ## Shutdown development environment
 
-If you are using Visual Studio Code with Docker, simply existing Visual Studio Code will stop the docker containers. They will start up again the next time you need to develop as long as you don't manually delete them.
+If you are using Visual Studio Code with Docker, simply exiting Visual Studio Code will stop the docker containers. They will start up again the next time you need to develop as long as you don't manually delete them.
 
 If you are using Vagrant and VirtualBox, when you are done, you can exit and shut down the vm with:
 
