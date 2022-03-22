@@ -5,19 +5,19 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## Available calls and inputs
-create_recs  """Creates a Recommendation - This endpoint will create a Recommendation based the data in the body that is posted"""
-list_recs """ Lists all Recommendations - This endpoint will list all recommendations in the database."""
-def check_content_type(media_type):     """Checks that the media type is correct"""
-get_recommendation  """Retrieve a single recommendation - This endpoint will return a recommendation based on it's id"""
-delete_recommendations  """Delete a Recommendations - This endpoint will delete a Recommendations based the id specified in the path"""
+```create_recs```  """Creates a Recommendation - This endpoint will create a Recommendation based the data in the body that is posted"""
+```list_recs``` """ Lists all Recommendations - This endpoint will list all recommendations in the database."""
+```def check_content_type(media_type):```     """Checks that the media type is correct"""
+```get_recommendation```  """Retrieve a single recommendation - This endpoint will return a recommendation based on it's id"""
+```delete_recommendations```  """Delete a Recommendations - This endpoint will delete a Recommendations based the id specified in the path"""
 
-init_db         """ Initializes the database session """
-all         """ Returns all of the RecommendationModel in the database """
-find         """ Finds a YourResourceModel by it's ID """
-find_or_404         """ Find a YourResourceModel by it's id """
-find_by_name         """Returns all Recommendations with the given name
-find_by_original_product_id """Returns all Recommendations with the given original product ID"""
-find_by_reason         """Returns all Recommendations with the given reason"""
+```init_db```         """ Initializes the database session """
+```all```         """ Returns all of the RecommendationModel in the database """
+```find```         """ Finds a YourResourceModel by it's ID """
+```find_or_404```         """ Find a YourResourceModel by it's id """
+```find_by_name```         """Returns all Recommendations with the given name
+```find_by_original_product_id``` """Returns all Recommendations with the given original product ID"""
+```find_by_reason```         """Returns all Recommendations with the given reason"""
     """Enumeration of Potential Reasons"""
 
        CROSS_SELL = 0
@@ -25,8 +25,8 @@ find_by_reason         """Returns all Recommendations with the given reason"""
        ACCESSORY = 2
        OTHER  = 3
 
-find_by_recommendation_product_id         """Returns all Recommendations with the given recommendation product ID"""
-find_by_recommendation_product_name         """Returns all Recommendations with the given recommendation product name"""
+```find_by_recommendation_product_id```         """Returns all Recommendations with the given recommendation product ID"""
+```find_by_recommendation_product_name```         """Returns all Recommendations with the given recommendation product name"""
 
 ## Running the tests
 
