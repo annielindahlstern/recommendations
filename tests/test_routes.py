@@ -61,7 +61,6 @@ class TestYourRecommendationServer(unittest.TestCase):
         db.session.remove()
         db.drop_all()
 
-
     def _create_recs(self, count):
         """Factory method to create recommendations in bulk"""
         recs = []
@@ -177,6 +176,28 @@ class TestYourRecommendationServer(unittest.TestCase):
         self.assertEqual(
             new_rec["reason"], test_rec.reason.name, "Reasons does not match"
         )
+
+    def test_update_rec(self):
+        """Update an existing Recommendation"""
+        # create a recommendation to update
+        test_rec = RecFactory()
+        resp = self.app.post(
+            BASE_URL, json=test_rec.serialize(), content_type=CONTENT_TYPE_JSON
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # update the recommendation
+        new_recommendation = resp.get_json()
+        logging.debug(new_recommendation)
+        new_recommendation["name"] = "Test123"
+        resp = self.app.put(
+            "/recommendations/{}".format(new_recommendation["id"]),
+            json=new_recommendation,
+            content_type=CONTENT_TYPE_JSON,
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_rec = resp.get_json()
+        self.assertEqual(updated_rec["name"], "Test123")
 
     def test_delete_recommendation(self):
         """Delete a Recommendation"""
