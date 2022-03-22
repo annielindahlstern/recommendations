@@ -121,8 +121,7 @@ class TestYourRecommendationServer(unittest.TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(data["name"], "Recommendation Demo REST API Service")
-
-
+        
     def test_create_rec(self):
         """Create a new Recommendation"""
         test_rec = RecFactory()
@@ -193,15 +192,6 @@ class TestYourRecommendationServer(unittest.TestCase):
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
-#    Leaving this out because it is producing an unknown error
-    # def test_get_rec_list(self):
-    #    """Get a list of Recs"""
-    #    self._create_recs(5)
-    #    resp = self.app.get(BASE_URL)
-    #    self.assertEqual(resp.status_code, status.HTTP_200_OK)
-    #    data = resp.get_json()
-    #    self.assertEqual(len(data), 5)
-
     def test_get_rec(self):
         """Get a single Rec"""
         # get the id of a Rec
@@ -218,13 +208,41 @@ class TestYourRecommendationServer(unittest.TestCase):
         resp = self.app.get("/recommendations/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
+    # Testing Sad Paths
 
-    def test_create_rec_no_data(self):
-        """Create a Rec with missing data"""
-        resp = self.app.post(BASE_URL, json={}, content_type=CONTENT_TYPE_JSON)
-        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_create_rec_no_content_type(self):
-        """Create a Rec with no content type"""
-        resp = self.app.post(BASE_URL)
+    def test_recs_bad_content_type(self):
+        """Test for bad content type"""
+        resp = self.app.get(BASE_URL, content_type='image/jpeg')
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+        error_response = resp.get_json()
+        self.assertEqual(error_response["error"], "Unsupported media type")
+        self.assertEqual(error_response["message"], "415 Unsupported Media Type: Content-Type must be application/json")
+        self.assertEqual(error_response["status"], 415)
+        
+    def test_create_rec_bad_request(self):
+        """Test for bad request"""
+        resp = self.app.post(
+            BASE_URL, json='123', content_type=CONTENT_TYPE_JSON
+        )
+        error_response = resp.get_json()
+        self.assertEqual(error_response["error"], "Bad Request")
+        self.assertEqual(error_response["message"], "Invalid pet: body of request contained bad or no data string indices must be integers")
+        self.assertEqual(error_response["status"], 400)
+
+    def test_recs_not_found(self):
+        """Test for unknown path"""
+        resp = self.app.get("testing123", content_type=CONTENT_TYPE_JSON)
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+        error_response = resp.get_json()
+        self.assertEqual(error_response["error"], "Not Found")
+        self.assertEqual(error_response["message"], "404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.")
+        self.assertEqual(error_response["status"], 404)
+
+    def test_recs_method_unsupported(self):
+        """Test for unsupported method"""
+        resp = self.app.put(BASE_URL, content_type=CONTENT_TYPE_JSON)
+        self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        error_response = resp.get_json()
+        self.assertEqual(error_response["error"], "Method not Allowed")
+        self.assertEqual(error_response["message"], "405 Method Not Allowed: The method is not allowed for the requested URL.")
+        self.assertEqual(error_response["status"], 405)

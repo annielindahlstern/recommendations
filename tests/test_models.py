@@ -304,6 +304,22 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(recs[0].original_product_id, 1)
         self.assertEqual(recs[0].reason, Reason.ACCESSORY)
 
+    def test_find_by_prod_B_name(self):
+        """Find Recommendations by product_B_name"""
+        RecommendationModel(name="iPhone", prod_A_id=1, prod_B_name="AirPods", prod_B_id=10, reason = Reason.ACCESSORY).create()
+        RecommendationModel(name="Radio", prod_A_id=2, prod_B_name="Batteries", prod_B_id=6, reason = Reason.CROSS_SELL).create()
+        recs = RecommendationModel.find_by_prod_B_name("AirPods")
+        self.assertEqual(recs[0].prod_B_name, "AirPods")
+        self.assertEqual(recs[0].name, "iPhone")
+        self.assertEqual(recs[0].prod_A_id, 1)
+        self.assertEqual(recs[0].reason, Reason.ACCESSORY)
+
+    def test_repr(self):
+        """Test repr"""
+        RecommendationModel(name="iPhone", prod_A_id=1, prod_B_name="AirPods", prod_B_id=10, reason = Reason.ACCESSORY).create()
+        model = RecommendationModel.find_by_prod_B_name("AirPods")[0]
+        self.assertEqual(repr(model), "<Recommendation 'iPhone' id=[1]>")
+
     def test_find_or_404_found(self):
         """Find or return 404 found"""
         recs = RecFactory.create_batch(3)
