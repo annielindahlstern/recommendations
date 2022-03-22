@@ -15,8 +15,6 @@ db = SQLAlchemy()
 class DataValidationError(Exception):
     """ Used for an data validation errors when deserializing """
 
-    pass
-
 class Reason(Enum):
     """Enumeration of Different Reasons"""
 
@@ -24,7 +22,7 @@ class Reason(Enum):
     UP_SELL = 1
     ACCESSORY = 2
     OTHER  = 3
-    
+
 class RecommendationModel(db.Model):
     """
     Class that represents a Recommendation
@@ -33,15 +31,15 @@ class RecommendationModel(db.Model):
     app = None
 
     # Table Schema
-    
+
     id = db.Column(db.Integer, primary_key=True)
 
-    # what is the original product (product A)
-    name = db.Column(db.String(63), nullable = False) 
-    prod_A_id = db.Column(db.Integer, nullable = False)
-    # what is being recommended based on the product (product B)
-    prod_B_name = db.Column(db.String(63), nullable = False)
-    prod_B_id = db.Column(db.Integer, nullable = False)
+    # what is the original product (original product)
+    name = db.Column(db.String(63), nullable = False)
+    original_product_id = db.Column(db.Integer, nullable = False)
+    # what is being recommended based on the product (recommendation product)
+    recommendation_product_name = db.Column(db.String(63), nullable = False)
+    recommendation_product_id = db.Column(db.Integer, nullable = False)
 
     # the Reason for the recommendation based on enumerators
     reason = db.Column(db.Enum(Reason), nullable=False, server_default=(Reason.OTHER.name))
@@ -75,28 +73,35 @@ class RecommendationModel(db.Model):
 
     def serialize(self):
         """ Serializes a YourResourceModel into a dictionary """
-        return {"id": self.id, "name": self.name,"prod_A_id": self.prod_A_id,"prod_B_name": self.prod_B_name,"prod_B_id": self.prod_B_id, "reason" :self.reason.name}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "original_product_id": self.original_product_id,
+            "recommendation_product_name": self.recommendation_product_name,
+            "recommendation_product_id": self.recommendation_product_id,
+            "reason" :self.reason.name
+        }
 
     def deserialize(self, data):
-        """ 
+        """
         Deserializes a Recommendation from a dictionary
         Args:
             data (dict): A dictionary containing the resource data
         """
         try:
             self.name = data["name"]
-            self.prod_A_id = data["prod_A_id"]
-            self.prod_B_name = data["prod_B_name"]
-            self.prod_B_id = data["prod_B_id"]
+            self.original_product_id = data["original_product_id"]
+            self.recommendation_product_name = data["recommendation_product_name"]
+            self.recommendation_product_id = data["recommendation_product_id"]
             self.reason = getattr(Reason, data["reason"])  # create enum from string
         except AttributeError as error:
-            raise DataValidationError("Invalid attribute: " + error.args[0])
+            raise DataValidationError("Invalid attribute: " + error.args[0]) from error
         except KeyError as error:
-            raise DataValidationError("Invalid pet: missing " + error.args[0])
+            raise DataValidationError("Invalid pet: missing " + error.args[0]) from error
         except TypeError as error:
             raise DataValidationError(
                 "Invalid pet: body of request contained bad or no data " + str(error)
-            )
+            ) from error
         return self
 
     @classmethod
@@ -138,13 +143,13 @@ class RecommendationModel(db.Model):
         return cls.query.filter(cls.name == name)
 
     @classmethod
-    def find_by_prod_A_id(cls, prod_A_id):
+    def find_by_original_product_id(cls, original_product_id):
         """Returns all Recommendations with the given original product ID
         Args:
             name (string): the ID of the original product you want to match
         """
-        logger.info("Processing name query for %r ...", prod_A_id)
-        return cls.query.filter(cls.prod_A_id == prod_A_id)
+        logger.info("Processing name query for %r ...", original_product_id)
+        return cls.query.filter(cls.original_product_id == original_product_id)
 
     @classmethod
     def find_by_reason(cls, reason : Reason = Reason.OTHER):
@@ -156,19 +161,19 @@ class RecommendationModel(db.Model):
         return cls.query.filter(cls.reason == reason)
 
     @classmethod
-    def find_by_prod_B_id(cls, prod_B_id):
-        """Returns all Recommendations with the given recommended product ID (Product B)
+    def find_by_recommendation_product_id(cls, recommendation_product_id):
+        """Returns all Recommendations with the given recommendation product ID
         Args:
             name (string): the recommended product ID of the Recommendation you want to match
         """
-        logger.info("Processing name query for %r ...", prod_B_id)
-        return cls.query.filter(cls.prod_B_id == prod_B_id)
-    
+        logger.info("Processing name query for %r ...", recommendation_product_id)
+        return cls.query.filter(cls.recommendation_product_id == recommendation_product_id)
+
     @classmethod
-    def find_by_prod_B_name(cls, prod_B_name):
-        """Returns all Recommendations with the given recommended product name (Product B)
+    def find_by_recommendation_product_name(cls, recommendation_product_name):
+        """Returns all Recommendations with the given recommendation product name
         Args:
             name (string): the recommended product name of the Recommendation you want to match
         """
-        logger.info("Processing name query for %r ...", prod_B_name)
-        return cls.query.filter(cls.prod_B_name == prod_B_name)
+        logger.info("Processing name query for %r ...", recommendation_product_name)
+        return cls.query.filter(cls.recommendation_product_id == recommendation_product_name)

@@ -1,8 +1,6 @@
 """
 TestRecommendationModel API Service Test Suite
 =======
-"""
-"""
 Recommendation API Service Test Suite
 Test cases can be run with the following:
   nosetests -v --with-spec --spec-color
@@ -17,9 +15,8 @@ import logging
 import unittest
 
 # from unittest.mock import MagicMock, patch
-from urllib.parse import quote_plus
 from service import app, status
-from service.models import Reason, RecommendationModel, db
+from service.models import DataValidationError, Reason, RecommendationModel, db
 from .factories import RecFactory
 
 # Disable all but critical errors during normal test run
@@ -66,7 +63,7 @@ class TestYourRecommendationServer(unittest.TestCase):
 
 
     def _create_recs(self, count):
-        """Factory method to create pets in bulk"""
+        """Factory method to create recommendations in bulk"""
         recs = []
         for _ in range(count):
             test_rec = RecFactory()
@@ -124,7 +121,7 @@ class TestYourRecommendationServer(unittest.TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(data["name"], "Recommendation Demo REST API Service")
-    
+        
     def test_create_rec(self):
         """Create a new Recommendation"""
         test_rec = RecFactory()
@@ -140,13 +137,19 @@ class TestYourRecommendationServer(unittest.TestCase):
         new_rec = resp.get_json()
         self.assertEqual(new_rec["name"], test_rec.name, "Names do not match")
         self.assertEqual(
-            new_rec["prod_A_id"], test_rec.prod_A_id, "Product A IDs do not match"
+            new_rec["original_product_id"],
+            test_rec.original_product_id,
+            "original product IDs do not match"
         )
         self.assertEqual(
-            new_rec["prod_B_id"], test_rec.prod_B_id, "Product B IDs do not match"
+            new_rec["recommendation_product_id"],
+            test_rec.recommendation_product_id,
+            "recommendation product IDs do not match"
         )
         self.assertEqual(
-            new_rec["prod_B_name"], test_rec.prod_B_name, "Product B names does not match"
+            new_rec["recommendation_product_name"],
+            test_rec.recommendation_product_name,
+            "recommendation product names does not match"
         )
         self.assertEqual(
             new_rec["reason"], test_rec.reason.name, "Reasons does not match"
@@ -157,13 +160,19 @@ class TestYourRecommendationServer(unittest.TestCase):
         new_rec = resp.get_json()
         self.assertEqual(new_rec["name"], test_rec.name, "Names do not match")
         self.assertEqual(
-            new_rec["prod_A_id"], test_rec.prod_A_id, "Product A IDs do not match"
+            new_rec["original_product_id"],
+            test_rec.original_product_id,
+            "original product IDs do not match"
         )
         self.assertEqual(
-            new_rec["prod_B_id"], test_rec.prod_B_id, "Product B IDs do not match"
+            new_rec["recommendation_product_id"],
+            test_rec.recommendation_product_id,
+            "recommendation product IDs do not match"
         )
         self.assertEqual(
-            new_rec["prod_B_name"], test_rec.prod_B_name, "Product B names does not match"
+            new_rec["recommendation_product_name"],
+            test_rec.recommendation_product_name,
+            "recommendation product names does not match"
         )
         self.assertEqual(
             new_rec["reason"], test_rec.reason.name, "Reasons does not match"
