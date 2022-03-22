@@ -67,13 +67,6 @@ class RecommendationModel(db.Model):
             raise DataValidationError("Update called with empty ID field")
         db.session.commit()
 
-    def save(self):
-        """
-        Updates a RecommendationModel to the database
-        """
-        logger.info("Saving Recommendation for %s", self.name)
-        db.session.commit()
-
     def delete(self):
         """ Removes a RecommendationModel from the data store """
         logger.info("Deleting Recommendation for %s", self.name)
@@ -178,4 +171,4 @@ class RecommendationModel(db.Model):
             name (string): the recommended product name of the Recommendation you want to match
         """
         logger.info("Processing name query for %r ...", prod_B_name)
-        return cls.query.filter(cls.prod_B_id == prod_B_name)
+        return cls.query.filter(cls.prod_B_name == prod_B_name)
