@@ -16,8 +16,7 @@ from . import app  # Import Flask application
 
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
-from flask_sqlalchemy import SQLAlchemy
-from service.models import RecommendationModel, DataValidationError
+from service.models import RecommendationModel
 
 ######################################################################
 # GET INDEX
@@ -25,9 +24,9 @@ from service.models import RecommendationModel, DataValidationError
 @app.route("/")
 def index():
 
-   """Root URL response"""
-   app.logger.info("Request for Root URL")
-   return (
+    """Root URL response"""
+    app.logger.info("Request for Root URL")
+    return (
        jsonify(
            name="Recommendation Demo REST API Service",
            version="1.0",
