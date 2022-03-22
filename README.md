@@ -6,28 +6,58 @@
 
 ## Available calls and inputs
 ```create_recs```  """Creates a Recommendation - This endpoint will create a Recommendation based the data in the body that is posted"""
+
 ```list_recs``` """ Lists all Recommendations - This endpoint will list all recommendations in the database."""
+
 ```def check_content_type(media_type):```     """Checks that the media type is correct"""
+
 ```get_recommendation```  """Retrieve a single recommendation - This endpoint will return a recommendation based on it's id"""
+
 ```delete_recommendations```  """Delete a Recommendations - This endpoint will delete a Recommendations based the id specified in the path"""
 
-```init_db```         """ Initializes the database session """
-```all```         """ Returns all of the RecommendationModel in the database """
-```find```         """ Finds a YourResourceModel by it's ID """
-```find_or_404```         """ Find a YourResourceModel by it's id """
-```find_by_name```         """Returns all Recommendations with the given name
-```find_by_original_product_id``` """Returns all Recommendations with the given original product ID"""
-```find_by_reason```         """Returns all Recommendations with the given reason"""
-    """Enumeration of Potential Reasons"""
 
-       CROSS_SELL = 0
-       UP_SELL = 1
-       ACCESSORY = 2
-       OTHER  = 3
+```init_db```         """ Initializes the database session """
+
+```all```         """ Returns all of the RecommendationModel in the database """
+
+```find```         """ Finds a YourResourceModel by it's ID """
+
+```find_or_404```         """ Find a YourResourceModel by it's id """
+
+```find_by_name```         """Returns all Recommendations with the given name
+
+```find_by_original_product_id``` """Returns all Recommendations with the given original product ID"""
+
+```find_by_reason```         """Returns all Recommendations with the given reason"""
+
+"""Enumeration of Potential Reasons"""
+
+CROSS_SELL = 0
+
+UP_SELL = 1
+
+ACCESSORY = 2
+
+OTHER  = 3
+
 
 ```find_by_recommendation_product_id```         """Returns all Recommendations with the given recommendation product ID"""
+
 ```find_by_recommendation_product_name```         """Returns all Recommendations with the given recommendation product name"""
 
+
+Paths:
+------
+GET /recommendations - Returns a list all of the Recommendations
+
+GET /recommendations/{id} - Returns the Recommendations with a given id number
+
+POST /recommendations - creates a new Recommendations record in the database
+
+PUT /recommendations/{id} - updates a Recommendations record in the database
+
+DELETE /recommendations/{id} - deletes a Recommendations record in the database
+"""
 ## Running the tests
 
 As developers we always want to run the tests before we change any code. That way we know if we broke the code or if someone before us did. Always run the test cases first!
