@@ -176,4 +176,4 @@ class RecommendationModel(db.Model):
             name (string): the recommended product name of the Recommendation you want to match
         """
         logger.info("Processing name query for %r ...", recommendation_product_name)
-        return cls.query.filter(cls.recommendation_product_id == recommendation_product_name)
+        return cls.query.filter(cls.recommendation_product_name == recommendation_product_name)
