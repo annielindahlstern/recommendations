@@ -36,27 +36,6 @@ def index():
    )
 
 ######################################################################
-# UPDATE AN EXISTING REC
-######################################################################
-# @app.route("/recs/<int:rec_id>", methods=["PUT"])
-# def update_recs(rec_id):
-#     """
-#     Update a Rec
-#     This endpoint will update a Rec based the body that is posted
-#     """
-#     app.logger.info("Request to update rec with id: %s", rec_id)
-#     check_content_type("application/json")
-#     rec = Rec.find(rec_id)
-#     if not rec:
-#         raise NotFound("Rec with id '{}' was not found.".format(rec_id))
-#     rec.deserialize(request.get_json())
-#     rec.id = rec_id
-#     rec.update()
-
-#     app.logger.info("Rec with ID [%s] updated.", rec.id)
-#     return make_response(jsonify(rec.serialize()), status.HTTP_200_OK)
-
-######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
 
@@ -72,7 +51,7 @@ def init_db():
 @app.route("/recommendations", methods=["POST"])
 def create_recs():
     """
-    Creates a Recommendations
+    Creates a Recommendation
     This endpoint will create a Recommendation based the data in the body that is posted
     """
     app.logger.info("Request to create a recommendation")
@@ -89,6 +68,28 @@ def create_recs():
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
 
+######################################################################
+# UPDATE AN EXISTING RECOMMENDATION
+######################################################################
+@app.route("/recommendations/<int:rec_id>", methods=["PUT"])
+def update_recs(rec_id):
+    """
+    Update a Recommendation
+    This endpoint will update a Recommendation based the body that is posted
+    """
+    app.logger.info("Request to update recommendation with id: %s", rec_id)
+    check_content_type("application/json")
+    rec = RecommendationModel.find(rec_id)
+    if not rec:
+        raise NotFound("Recommendation with id '{}' was not found.".format(rec_id))
+    rec.deserialize(request.get_json())
+    rec.id = rec_id
+    rec.update()
+
+    app.logger.info("Recommendation with ID [%s] updated.", rec.id)
+    return make_response(jsonify(rec.serialize()), status.HTTP_200_OK)
+
+######################################################################
 # LIST ALL RECOMMENDATIONS
 ######################################################################
 @app.route("/recommendations", methods=["GET"])
@@ -144,6 +145,7 @@ def get_recommendation(recommendations_id):
 
     app.logger.info("Returning recommendation: %s", recommendation.name)
     return make_response(jsonify(recommendation.serialize()), status.HTTP_200_OK)
+
 ######################################################################
 # DELETE A RECOMMENDATION
 ######################################################################
