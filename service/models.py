@@ -152,7 +152,7 @@ class RecommendationModel(db.Model):
         return cls.query.filter(cls.reason == reason)
 
     @classmethod
-    def find_by_recommendation_product_id(cls, recommendation_product_id : int) -> list:
+    def find_by_recommendation_product_id(cls, recommendation_product_id : int):
         """Returns all Recommendations with the given recommendation product ID
         Args:
             name (string): the recommended product ID of the Recommendation you want to match
