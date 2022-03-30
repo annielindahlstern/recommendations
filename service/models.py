@@ -121,19 +121,19 @@ class RecommendationModel(db.Model):
         return cls.query.all()
 
     @classmethod
-    def find(cls, by_id):
-        """ Finds a YourResourceModel by it's ID """
-        logger.info("Processing lookup for id %s ...", by_id)
-        return cls.query.get(by_id)
+    def find(cls, original_product_id : int):
+        """ Finds a Recommendation by it's product ID """
+        logger.info("Processing lookup for id %s ...", original_product_id)
+        return cls.query.get(original_product_id)
 
     @classmethod
-    def find_or_404(cls, by_id):
-        """ Find a YourResourceModel by it's id """
-        logger.info("Processing lookup or 404 for id %s ...", by_id)
-        return cls.query.get_or_404(by_id)
+    def find_or_404(cls, original_product_id : int):
+        """ Find a Receommendation by it's id """
+        logger.info("Processing lookup or 404 for id %s ...", original_product_id)
+        return cls.query.get_or_404(original_product_id)
 
     @classmethod
-    def find_by_name(cls, name):
+    def find_by_name(cls, name : str) -> list:
 
         """Returns all Recommendations with the given name
         Args:
@@ -143,34 +143,25 @@ class RecommendationModel(db.Model):
         return cls.query.filter(cls.name == name)
 
     @classmethod
-    def find_by_original_product_id(cls, original_product_id):
-        """Returns all Recommendations with the given original product ID
-        Args:
-            name (string): the ID of the original product you want to match
-        """
-        logger.info("Processing name query for %r ...", original_product_id)
-        return cls.query.filter(cls.original_product_id == original_product_id)
-
-    @classmethod
-    def find_by_reason(cls, reason : Reason = Reason.OTHER):
+    def find_by_reason(cls, reason : Reason = Reason.OTHER) -> list:
         """Returns all Recommendations with the given reason
         Args:
             name (string): the reason of the Recommendation you want to match
         """
-        logger.info("Processing name query for %s ...", reason)
+        logger.info("Processing name query for %s ...", reason.name)
         return cls.query.filter(cls.reason == reason)
 
     @classmethod
-    def find_by_recommendation_product_id(cls, recommendation_product_id):
+    def find_by_recommendation_product_id(cls, recommendation_product_id : int):
         """Returns all Recommendations with the given recommendation product ID
         Args:
             name (string): the recommended product ID of the Recommendation you want to match
         """
-        logger.info("Processing name query for %r ...", recommendation_product_id)
+        logger.info("Processing name query for %s ...", recommendation_product_id)
         return cls.query.filter(cls.recommendation_product_id == recommendation_product_id)
 
     @classmethod
-    def find_by_recommendation_product_name(cls, recommendation_product_name):
+    def find_by_recommendation_product_name(cls, recommendation_product_name : str) -> list:
         """Returns all Recommendations with the given recommendation product name
         Args:
             name (string): the recommended product name of the Recommendation you want to match

@@ -227,27 +227,6 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(recs[0].recommendation_product_id, 10)
         self.assertEqual(recs[0].reason, Reason.ACCESSORY)
 
-    def test_find_by_original_product_id(self):
-        """Find Recommendation by original product id"""
-        RecommendationModel(
-            name="iPhone",
-            original_product_id=1,
-            recommendation_product_name="AirPods",
-            recommendation_product_id=10,
-            reason = Reason.ACCESSORY
-        ).create()
-        RecommendationModel(
-            name="Radio",
-            original_product_id=2,
-            recommendation_product_name="Batteries",
-            recommendation_product_id=6,
-            reason = Reason.CROSS_SELL
-        ).create()
-        recs = RecommendationModel.find_by_original_product_id(1)
-        self.assertEqual(recs[0].recommendation_product_name, "AirPods")
-        self.assertEqual(recs[0].name, "iPhone")
-        self.assertEqual(recs[0].recommendation_product_id, 10)
-        self.assertEqual(recs[0].reason, Reason.ACCESSORY)
 
     def test_find_by_reason(self):
         """Find Recommendations by Reason"""
