@@ -15,6 +15,7 @@ import logging
 import unittest
 
 # from unittest.mock import MagicMock, patch
+from urllib.parse import quote_plus
 from service import app, status
 from service.models import DataValidationError, Reason, RecommendationModel, db
 from .factories import RecFactory
@@ -229,6 +230,23 @@ class TestYourRecommendationServer(unittest.TestCase):
         resp = self.app.get("/recommendations/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_query_recommendation_list_by_original_product_id(self):
+        """Query Recommendations by Original Product ID"""
+        recs = self._create_recs(10)
+        test_original_product_id = recs[0].original_product_id
+        prod_id_list = [rec for rec in recs if rec.original_product_id == test_original_product_id]
+        logging.info(
+            f"Original Product ID={test_original_product_id}: {len(prod_id_list)} = {prod_id_list}"
+        )
+        resp = self.app.get(
+            BASE_URL, query_string=f"original_product_id = {test_original_product_id}"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), len(prod_id_list))
+        # check the data just to be sure
+        for rec in data:
+            self.assertEqual(rec["original_product_id"], test_original_product_id)
     # Testing Sad Paths
 
     def test_recs_bad_content_type(self):

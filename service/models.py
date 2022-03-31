@@ -121,14 +121,14 @@ class RecommendationModel(db.Model):
         return cls.query.all()
 
     @classmethod
-    def find(cls, original_product_id : int):
-        """ Finds a Recommendation by it's product ID """
-        logger.info("Processing lookup for id %s ...", original_product_id)
-        return cls.query.get(original_product_id)
+    def find(cls, recommendation_id : int):
+        """ Finds a Recommendation by its ID """
+        logger.info("Processing lookup for id %s ...", recommendation_id)
+        return cls.query.get(recommendation_id)
 
     @classmethod
     def find_or_404(cls, original_product_id : int):
-        """ Find a Receommendation by it's id """
+        """ Find a Recommendation by it's id """
         logger.info("Processing lookup or 404 for id %s ...", original_product_id)
         return cls.query.get_or_404(original_product_id)
 
@@ -150,6 +150,15 @@ class RecommendationModel(db.Model):
         """
         logger.info("Processing name query for %s ...", reason.name)
         return cls.query.filter(cls.reason == reason)
+    
+    @classmethod
+    def find_by_original_product_id(cls, original_product_id : int):
+        """Returns all Recommendations with the given recommendation product ID
+        Args:
+            name (string): the recommended product ID of the Recommendation you want to match
+        """
+        logger.info("Processing name query for %s ...", original_product_id)
+        return cls.query.filter(cls.original_product_id == original_product_id)
 
     @classmethod
     def find_by_recommendation_product_id(cls, recommendation_product_id : int):

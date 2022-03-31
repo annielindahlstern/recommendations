@@ -105,6 +105,12 @@ def list_recs():
     app.logger.info("Fetched [%i] recs.", len(all_recs))
 
     data = []
+
+    original_product_id = request.args.get("original_product_id")
+
+    if original_product_id:
+        data = RecommendationModel.find_by_original_product_id(original_product_id)
+
     for rec in all_recs:
         data.append(rec.serialize())
 
