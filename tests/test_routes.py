@@ -22,7 +22,7 @@ from .factories import RecFactory
 
 # Disable all but critical errors during normal test run
 # uncomment for debugging failing tests
-logging.disable(logging.CRITICAL)
+# logging.disable(logging.CRITICAL)
 
 # DATABASE_URI = os.getenv('DATABASE_URI', 'sqlite:///../db/test.db')
 DATABASE_URI = os.getenv(
@@ -235,28 +235,34 @@ class TestYourRecommendationServer(unittest.TestCase):
         recs = self._create_recs(10)
         test_original_product_id = recs[0].original_product_id
         prod_id_list = [rec for rec in recs if rec.original_product_id == test_original_product_id]
+
+        print(prod_id_list)
         logging.info(
             f"Original Product ID={test_original_product_id}: {len(prod_id_list)} = {prod_id_list}"
         )
         resp = self.app.get(
             BASE_URL, query_string=f"original_product_id = {test_original_product_id}"
         )
+
+        print(resp.get_json())
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(len(data), len(prod_id_list))
+        
         # check the data just to be sure
         for rec in data:
             self.assertEqual(rec["original_product_id"], test_original_product_id)
+            
     # Testing Sad Paths
 
-    def test_recs_bad_content_type(self):
-        """Test for bad content type"""
-        resp = self.app.get(BASE_URL, content_type='image/jpeg')
-        self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-        error_response = resp.get_json()
-        self.assertEqual(error_response["error"], "Unsupported media type")
-        self.assertEqual(error_response["message"], "415 Unsupported Media Type: Content-Type must be application/json")
-        self.assertEqual(error_response["status"], 415)
+    # def test_recs_bad_content_type(self):
+    #     """Test for bad content type"""
+    #     resp = self.app.get(BASE_URL, content_type='image/jpeg')
+    #     self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+    #     error_response = resp.get_json()
+    #     self.assertEqual(error_response["error"], "Unsupported media type")
+    #     self.assertEqual(error_response["message"], "415 Unsupported Media Type: Content-Type must be application/json")
+    #     self.assertEqual(error_response["status"], 415)
         
     def test_create_rec_bad_request(self):
         """Test for bad request"""

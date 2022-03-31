@@ -4,6 +4,7 @@ All of the models are stored in this module
 """
 import logging
 from enum import Enum
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 logger = logging.getLogger("flask.app")
@@ -105,7 +106,7 @@ class RecommendationModel(db.Model):
         return self
 
     @classmethod
-    def init_db(cls, app):
+    def init_db(cls, app: Flask):
         """ Initializes the database session """
         logger.info("Initializing database")
         cls.app = app
@@ -115,7 +116,7 @@ class RecommendationModel(db.Model):
         db.create_all()  # make our sqlalchemy tables
 
     @classmethod
-    def all(cls):
+    def all(cls) -> list:
         """ Returns all of the RecommendationModel in the database """
         logger.info("Processing all RecommendationModels")
         return cls.query.all()
@@ -155,7 +156,7 @@ class RecommendationModel(db.Model):
     def find_by_original_product_id(cls, original_product_id : int):
         """Returns all Recommendations with the given recommendation product ID
         Args:
-            name (string): the recommended product ID of the Recommendation you want to match
+            original_product_id (ints): the recommended product ID of the Recommendation you want to match
         """
         logger.info("Processing name query for %s ...", original_product_id)
         return cls.query.filter(cls.original_product_id == original_product_id)
@@ -164,7 +165,7 @@ class RecommendationModel(db.Model):
     def find_by_recommendation_product_id(cls, recommendation_product_id : int):
         """Returns all Recommendations with the given recommendation product ID
         Args:
-            name (string): the recommended product ID of the Recommendation you want to match
+            recommendation_product_id (int): the recommended product ID of the Recommendation you want to match
         """
         logger.info("Processing name query for %s ...", recommendation_product_id)
         return cls.query.filter(cls.recommendation_product_id == recommendation_product_id)
