@@ -86,10 +86,10 @@ class TestYourRecommendationServer(unittest.TestCase):
         test_rec = RecFactory()
         logging.debug(test_rec)
         resp = self.app.get(BASE_URL, content_type=CONTENT_TYPE_JSON)
-        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
         empty_response = resp.get_json()
         # There should be no recs
-        self.assertIsNone(empty_response)
+        self.assertEquals(empty_response, [])
 
     def test_list_single_recs(self):
         """Test for a list with one rec"""
@@ -236,15 +236,12 @@ class TestYourRecommendationServer(unittest.TestCase):
         test_original_product_id = recs[0].original_product_id
         prod_id_list = [rec for rec in recs if rec.original_product_id == test_original_product_id]
 
-        print(prod_id_list)
         logging.info(
             f"Original Product ID={test_original_product_id}: {len(prod_id_list)} = {prod_id_list}"
         )
         resp = self.app.get(
-            BASE_URL, query_string=f"original_product_id = {test_original_product_id}"
+            BASE_URL, query_string=f"original_product_id={test_original_product_id}"
         )
-
-        print(resp.get_json())
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(len(data), len(prod_id_list))
