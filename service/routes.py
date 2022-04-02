@@ -103,10 +103,14 @@ def list_recs():
     recs = []
 
     original_product_id = request.args.get("original_product_id")
+    reason = request.args.get("reason")
 
     if original_product_id:
         app.logger.info("Filtering by original product ID: %s", original_product_id)
         recs = RecommendationModel.find_by_original_product_id(original_product_id)
+    elif reason:
+        app.logger.info("Filtering by reason: %s", original_product_id)
+        recs = RecommendationModel.find_by_reason(reason)
     else:
         recs = RecommendationModel.all()
 
