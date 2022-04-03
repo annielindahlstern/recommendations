@@ -252,7 +252,7 @@ class TestYourRecommendationServer(unittest.TestCase):
      
     def test_query_recommendation_list_by_reason(self):
         """Query Recommendations by Reason"""
-        recs = self._create_recs(10)
+        recs = self._create_recommendations(10)
         test_reason = recs[0].reason.name
         reason_list = [rec for rec in recs if rec.reason.name == test_reason]
 
