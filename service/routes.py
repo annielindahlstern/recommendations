@@ -30,7 +30,7 @@ def index():
        jsonify(
            name="Recommendation Demo REST API Service",
            version="1.0",
-           paths=url_for("list_recs", _external=True),
+           paths=url_for("list_recommendations", _external=True),
        ),
        status.HTTP_200_OK,
    )
@@ -49,7 +49,7 @@ def init_db():
 # ADD A NEW RECOMMENDATION
 #####################################################################
 @app.route("/recommendations", methods=["POST"])
-def create_recs():
+def create_recommendations():
     """
     Creates a Recommendation
     This endpoint will create a Recommendation based the data in the body that is posted
@@ -72,7 +72,7 @@ def create_recs():
 # UPDATE AN EXISTING RECOMMENDATION
 ######################################################################
 @app.route("/recommendations/<int:rec_id>", methods=["PUT"])
-def update_recs(rec_id):
+def update_recommendations(rec_id):
     """
     Update a Recommendation
     This endpoint will update a Recommendation based the body that is posted
@@ -93,7 +93,7 @@ def update_recs(rec_id):
 # LIST ALL RECOMMENDATIONS
 ######################################################################
 @app.route("/recommendations", methods=["GET"])
-def list_recs():
+def list_recommendations():
     """
     Lists all Recommendations
     This endpoint will list all recommendations in the database.
