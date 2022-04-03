@@ -249,7 +249,26 @@ class TestYourRecommendationServer(unittest.TestCase):
         # check the data just to be sure
         for rec in data:
             self.assertEqual(rec["original_product_id"], test_original_product_id)
-            
+     
+    def test_query_recommendation_list_by_reason(self):
+        """Query Recommendations by Reason"""
+        recs = self._create_recs(10)
+        test_reason = recs[0].reason.name
+        reason_list = [rec for rec in recs if rec.reason.name == test_reason]
+
+        logging.info(
+            f"Reason={test_reason}: {len(reason_list)} = {reason_list}"
+        )
+        resp = self.app.get(
+            BASE_URL, query_string=f"reason={test_reason}"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), len(reason_list))
+        
+        # check the data just to be sure
+        for rec in data:
+            self.assertEqual(rec["reason"], test_reason)       
     # Testing Sad Paths
 
     # def test_recs_bad_content_type(self):

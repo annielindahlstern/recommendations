@@ -144,12 +144,12 @@ class RecommendationModel(db.Model):
         return cls.query.filter(cls.name == name)
 
     @classmethod
-    def find_by_reason(cls, reason : Reason = Reason.OTHER) -> list:
+    def find_by_reason(cls, reason : str) -> list:
         """Returns all Recommendations with the given reason
         Args:
             name (string): the reason of the Recommendation you want to match
         """
-        logger.info("Processing name query for %s ...", reason.name)
+        logger.info("Processing name query for %s ...", reason)
         return cls.query.filter(cls.reason == reason)
     
     @classmethod
