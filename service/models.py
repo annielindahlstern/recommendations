@@ -45,6 +45,8 @@ class RecommendationModel(db.Model):
     # the Reason for the recommendation based on enumerators
     reason = db.Column(db.Enum(Reason), nullable=False, server_default=(Reason.OTHER.name))
 
+    activated = db.Column(db.Boolean(), nullable=False, default=True)
+
     def __repr__(self):
         return "<Recommendation %r id=[%s]>" % (self.name, self.id)
 
@@ -80,7 +82,8 @@ class RecommendationModel(db.Model):
             "original_product_id": self.original_product_id,
             "recommendation_product_name": self.recommendation_product_name,
             "recommendation_product_id": self.recommendation_product_id,
-            "reason" :self.reason.name
+            "reason" :self.reason.name,
+            "activated" :self.activated
         }
 
     def deserialize(self, data):
@@ -95,6 +98,7 @@ class RecommendationModel(db.Model):
             self.recommendation_product_name = data["recommendation_product_name"]
             self.recommendation_product_id = data["recommendation_product_id"]
             self.reason = getattr(Reason, data["reason"])  # create enum from string
+            self.activated = data["activated"]
         except AttributeError as error:
             raise DataValidationError("Invalid attribute: " + error.args[0]) from error
         except KeyError as error:

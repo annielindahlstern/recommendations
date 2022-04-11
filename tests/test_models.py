@@ -150,6 +150,7 @@ class TestRecommendationModel(unittest.TestCase):
             "recommendation_product_name": "AirPods",
             "recommendation_product_id": 10,
             "reason": "ACCESSORY",
+            "activated": True
         }
         rec = RecommendationModel()
         rec.deserialize(data)

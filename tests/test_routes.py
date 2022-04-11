@@ -16,6 +16,8 @@ import unittest
 
 # from unittest.mock import MagicMock, patch
 from urllib.parse import quote_plus
+
+from sqlalchemy import false
 from service import app, status
 from service.models import DataValidationError, Reason, RecommendationModel, db
 from .factories import RecFactory
@@ -307,3 +309,52 @@ class TestYourRecommendationServer(unittest.TestCase):
         self.assertEqual(error_response["error"], "Method not Allowed")
         self.assertEqual(error_response["message"], "405 Method Not Allowed: The method is not allowed for the requested URL.")
         self.assertEqual(error_response["status"], 405)
+
+    ######################################################################
+    # T E S T   A C T I O N S
+    ######################################################################
+
+    def activate_test_recommendations(self):
+        """Manually Activate Recommendation"""
+        rec = RecFactory()
+        rec.activated = False
+        resp = self.app.post(
+            BASE_URL, json=rec.serialize(), content_type=CONTENT_TYPE_JSON
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        rec_data = resp.get_json()
+        rec_id = rec_data["id"]
+        logging.info(f"Created Recommendation with id {rec_id} = {rec_data}")
+
+        # Request to manually activate recommendation
+        resp = self.app.put(f"{BASE_URL}/{rec_id}/activate")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+
+        # Retrieve the recommendation and make sue it is no longer available
+        resp = self.app.get(f"{BASE_URL}/{rec_id}")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        rec_data = resp.get_json()
+        self.assertEqual(rec_data["id"], rec_id)
+        self.assertEqual(rec_data["activated"], True)
+
+    def test_not_activated(self):
+        """Activate a recommendation that is already activated"""
+        rec = RecFactory()
+        rec.activated = True
+        resp = self.app.post(
+            BASE_URL, json=rec.serialize(), content_type=CONTENT_TYPE_JSON
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        rec_data = resp.get_json()
+        rec_id = rec_data["id"]
+        logging.info(f"Activate recommendation with id {rec_id} = {rec_data}")
+
+        # Request to activate a recommendation should fail
+        resp = self.app.put(f"{BASE_URL}/{rec_id}/activate")
+        self.assertEqual(resp.status_code, status.HTTP_409_CONFLICT)
+
+    def activate_test_recommendation_notfound(self):
+        """Manually Activate Recommendation not found"""
+        resp = self.app.put(f"{BASE_URL}/foo/activate")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)    
+    ######################################################################

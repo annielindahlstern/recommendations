@@ -36,4 +36,5 @@ class RecFactory(factory.Factory):
     recommendation_product_name = factory.Faker("first_name")
     recommendation_product_id = factory.Sequence(lambda n: n)
 
+    activated = FuzzyChoice(choices=[True, False])
     reason = FuzzyChoice(choices=[Reason.CROSS_SELL , Reason.UP_SELL , Reason.ACCESSORY, Reason.OTHER])
