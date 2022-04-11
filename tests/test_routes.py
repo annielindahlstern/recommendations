@@ -202,6 +202,18 @@ class TestYourRecommendationServer(unittest.TestCase):
         updated_rec = resp.get_json()
         self.assertEqual(updated_rec["name"], "Test123")
 
+    def test_update_recommendation_not_found(self):
+        """Update a non-existing Recommendation"""
+        # create a non-existing recommendation to update
+        test_rec = RecFactory()
+        resp = self.app.put(
+            "/recommendations/0",
+            json=test_rec.serialize(),
+            content_type=CONTENT_TYPE_JSON,
+        )
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+
     def test_delete_recommendations(self):
         """Delete a Recommendation"""
         test_recommendation = self._create_recommendations(1)[0]
