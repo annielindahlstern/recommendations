@@ -169,3 +169,23 @@ def delete_recommendations(recommendations_id):
     app.logger.info("Recommendations with ID [%s] delete complete.", recommendations_id)
     return make_response("", status.HTTP_204_NO_CONTENT)
 
+########################################################
+#CREATE A FUNCTION TO MANUALLY ACTIVATE RECOMMENDATION #
+########################################################
+
+@app.route("/recommendations/<int:recommendations_id>/activate", methods=["PUT"])
+def activate_recommendation(recommendations_id):
+    """Endpoint to Activate a Recommendation"""
+    app.logger.info("Request to Activate Recommendation with id: %s", recommendations_id)
+
+    rec = RecommendationModel.find(recommendations_id)
+    if not rec:
+        abort(status.HTTP_404_NOT_FOUND, f"Recommendation with id '{recommendations_id}' was not found.")
+
+    if rec.activated:
+        abort(status.HTTP_409_CONFLICT, f"Recommendation with id '{recommendations_id}' is not available.")
+
+    rec.activated = True
+    rec.update()
+    return jsonify(rec.serialize()), status.HTTP_200_OK
+
