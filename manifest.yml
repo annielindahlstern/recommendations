@@ -4,7 +4,7 @@ applications:
 - name: nyu-recommendation-service-sp2201
   path: .
   instances: 2
-  memory: 64M
+  memory: 128M
   routes:
   - route: nyu-recommendation-service-sp2201.us-south.cf.appdomain.cloud
   disk_quota: 1024M
@@ -14,7 +14,6 @@ applications:
   
   #this may not run correctly until ElephantSQL is connected to the app. Call name may be incorrect 
   services:
-  - Cloudant
   - ElephantSQL
   env:
     FLASK_APP : service:app
