@@ -4,13 +4,9 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '**.md'
   pull_request:
     branches:
       - main
-    paths-ignore:
-      - '**.md'
 
 jobs:
   build:
@@ -18,15 +14,17 @@ jobs:
     container: python:3.9-slim
 
     services:
-      couchdb:
-        image: couchdb:latest
-        ports:
-          - 5984:5984
+      # Label used to access the service container
+      postgres:
+        image: postgres
         env:
-          COUCHDB_USER: admin                  
-          COUCHDB_PASSWORD: pass                  
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
         options: >-
-          --health-cmd "curl -X GET http://couchdb:5984/"
+          --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -54,7 +52,7 @@ jobs:
           curl -I http://localhost:8080/
           echo "\n*** SERVER IS RUNNING ***"
         env:
-          BINDING_CLOUDANT: '{"username":"admin","password":"pass","host":"couchdb","port":5984,"url":"http://admin:pass@couchdb:5984"}'
+          DATABASE_URI: "postgresql://postgres:postgres@postgres:5432/testdb"
 
       - name: Run unit tests with behave
         run: behave
