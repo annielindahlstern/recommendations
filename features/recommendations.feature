@@ -42,6 +42,7 @@ Scenario: The server is running
 #     And I should see "UP_SELL" in the "Reason" dropdown
 #     And I should see "True" in the "Activated" dropdown
 
+
 # Scenario: List all pets
 #     When I visit the "Home Page"
 #     And I press the "Search" button
@@ -49,6 +50,7 @@ Scenario: The server is running
 #     And I should see "mouse" in the results
 #     And I should not see "jelly" in the results
 #     And I should not see "tea" in the results
+
 
 # Scenario: Search for dogs
 #     When I visit the "Home Page"
