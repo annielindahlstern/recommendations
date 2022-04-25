@@ -18,22 +18,25 @@ from . import app  # Import Flask application
 # variety of backends including SQLite, MySQL, and PostgreSQL
 from service.models import RecommendationModel
 
+
 ######################################################################
 # GET INDEX
 ######################################################################
 @app.route("/")
 def index():
 
-    """Root URL response"""
-    app.logger.info("Request for Root URL")
-    return (
-       jsonify(
-           name="Recommendation Demo REST API Service",
-           version="1.0",
-           paths=url_for("list_recommendations", _external=True),
-       ),
-       status.HTTP_200_OK,
-   )
+    """Based URL response"""
+    return app.send_static_file("index.html")
+
+    # app.logger.info("Request for Root URL")
+    # return (
+    #    jsonify(
+    #        name="Recommendation Demo REST API Service",
+    #        version="1.0",
+    #        paths=url_for("list_recommendations", _external=True),
+    #    ),
+    #    status.HTTP_200_OK,
+#    )
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
