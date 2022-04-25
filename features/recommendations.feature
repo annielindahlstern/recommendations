@@ -42,7 +42,7 @@ Scenario: Create a Recommendation
     And I should see "UP_SELL" in the "Reason" dropdown
     And I should see "True" in the "Activated" dropdown
 
-Scenario: List all pets
+Scenario: List all Recommendations
     When I visit the "Home Page"
     And I press the "Search" button
     Then I should see "desk" in the results
@@ -82,3 +82,13 @@ Scenario: Update a Pet
     And I press the "Search" button
     Then I should see "lamp" in the results
     Then I should not see "desk" in the results
+
+Scenario: Deactivate a Recommendation
+    When I visit the "Home Page"
+    And I set the "name" to "tea"
+    And I set the "activated" to "false"
+    Then I should see "" in the "recommendation_product_name" field
+    When I visit the "Home Page"
+    And I set the "name" to "tea"
+    And I set the "activated" to "true"
+    Then I should see "mug" in the "recommendation_product_name" field
