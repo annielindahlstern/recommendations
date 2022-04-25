@@ -32,6 +32,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install libraries for PostgreSQL
+        run: |
+          apt-get update
+          apt-get install -y gcc libpq-dev
+          
       - name: Install dependencies
         run: |
           apt-get update
