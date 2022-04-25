@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: |
           apt-get update
-          apt-get install -y wget python3-selenium
+          apt-get install -y curl wget python3-selenium
 
       - name: Install packages
         run: |
