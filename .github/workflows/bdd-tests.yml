@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: |
           apt-get update
-          apt-get install -y gcc libpq-dev
+          apt-get install -y wget python3-selenium
 
       - name: Install packages
         run: |
