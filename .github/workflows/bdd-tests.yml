@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: python:3.9-slim
+    container: rofrano/pipeline-selenium:latest
 
     services:
       # Label used to access the service container
@@ -49,8 +49,6 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       
-      - name: Run unit tests with nose
-        run: nosetests
-        env:
-          DATABASE_URI: "postgresql://postgres:postgres@postgres:5432/testdb"
+      - name: Run unit tests with behave
+        run: behave
   
