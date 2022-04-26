@@ -52,6 +52,7 @@ Scenario: The server is running
 #     And I should not see "tea" in the results
 
 
+
 # Scenario: Search for dogs
 #     When I visit the "Home Page"
 #     And I set the "recommendation_product_name" to "chair"
@@ -84,3 +85,13 @@ Scenario: The server is running
 #     And I press the "Search" button
 #     Then I should see "lamp" in the results
 #     Then I should not see "desk" in the results
+
+Scenario: Deactivate a Recommendation
+    When I visit the "Home Page"
+    And I set the "name" to "tea"
+    And I set the "activated" to "false"
+    Then I should see "" in the "recommendation_product_name" field
+    When I visit the "Home Page"
+    And I set the "name" to "tea"
+    And I set the "activated" to "true"
+    Then I should see "mug" in the "recommendation_product_name" field
