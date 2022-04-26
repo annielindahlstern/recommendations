@@ -43,13 +43,14 @@ Scenario: Create a Recommendation
     And I should see "True" in the "Activated" dropdown
 
 
-# Scenario: List all pets
-#     When I visit the "Home Page"
-#     And I press the "Search" button
-#     Then I should see "desk" in the results
-#     And I should see "mouse" in the results
-#     And I should not see "jelly" in the results
-#     And I should not see "tea" in the results
+Scenario: List all recommendations
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I press the "Search" button
+    Then I should see "desk" in the results
+    And I should see "mouse" in the results
+    And I should see "jelly" in the results
+    And I should see "tea" in the results
 
 
 
