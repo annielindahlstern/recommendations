@@ -24,7 +24,7 @@ def step_impl(context):
     create_url = context.base_url + '/recommendations'
     for row in context.table:
         data = {
-            "original_product_name": row['original_product_name'],
+            "name": row['name'],
             "original_product_id": row['original_product_id'],
             "recommendation_product_id": row['recommendation_product_id'],
             "recommendation_product_name": row['recommendation_product_name'],

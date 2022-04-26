@@ -10,7 +10,7 @@ $(function () {
         $("#recommendation_name").val(res.name);
         $("#recommendation_original_product_id").val(res.original_product_id);
         $("#recommendation_product_id").val(res.recommendation_product_id);
-        $("#recommendation_product_name").val(res.recommendation_product_id);
+        $("#recommendation_product_name").val(res.recommendation_product_name);
         if (res.activated == true) {
             $("#recommendation_activated").val("true");
         } else {
@@ -238,6 +238,7 @@ $(function () {
             table += '<thead><tr>'
             table += '<th class="col-md-2">ID</th>'
             table += '<th class="col-md-2">Name</th>'
+            table += '<th class="col-md-2">Original Product ID</th>'
             table += '<th class="col-md-2">Recommendation Name</th>'
             table += '<th class="col-md-2">Recommendation ID</th>'
             table += '<th class="col-md-2">Reason</th>'
@@ -246,7 +247,7 @@ $(function () {
             let firstRec = "";
             for(let i = 0; i < res.length; i++) {
                 let rec = res[i];
-                table +=  `<tr id="row_${i}"><td>${rec._id}</td><td>${rec.name}</td><td>${rec.recommendation_product_name}</td><td>${rec.recommendation_product_id}</td><td>${rec.reason}</td><td>${rec.activated}</td></tr>`;
+                table +=  `<tr id="row_${i}"><td>${rec.id}</td><td>${rec.name}</td><td>${rec.original_product_id}</td><td>${rec.recommendation_product_name}</td><td>${rec.recommendation_product_id}</td><td>${rec.reason}</td><td>${rec.activated}</td></tr>`;
                 if (i == 0) {
                     firstRec = rec;
                 }
