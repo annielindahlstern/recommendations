@@ -5,7 +5,7 @@ Feature: The recommendation service back-end
 
 Background:
     Given the following recommendations
-        | original_product_name | original_product_id | recommendation_product_id | recommendation_product_name  | reason     | activated |
+        | name                  | original_product_id | recommendation_product_id | recommendation_product_name  | reason     | activated |
         | desk                  | 1                   | 5                         | chair                        | CROSS_SELL | True      |
         | mouse                 | 2                   | 6                         | keyboard                     | UP_SELL    | True      |
         | jelly                 | 3                   | 7                         | beans                        | OTHER      | False     |
@@ -16,31 +16,31 @@ Scenario: The server is running
     Then I should see "Recommendation Demo RESTful Service" in the title
     And I should not see "404 Not Found"
 
-# Scenario: Create a Recommendation
-#     When I visit the "Home Page"
-#     And I set the "original_product_name" to "couch"
-#     And I set the "original_product_id" to "9"
-#     And I set the "recommendation_product_name" to "tv"
-#     And I set the "recommendation_product_id" to "10"
-#     And I select "UP_SELL" in the "Reason" dropdown
-#     And I select "True" in the "Activated" dropdown
-#     And I press the "Create" button
-#     Then I should see the message "Success"
-#     When I copy the "Id" field
-#     And I press the "Clear" button
-#     Then the "Id" field should be empty
-#     And the "original_product_name" field should be empty
-#     And the "original_product_id" field should be empty
-#     And the "recommendation_product_name" field should be empty
-#     And the "recommendation_product_id" field should be empty
-#     When I paste the "Id" field
-#     And I press the "Retrieve" button
-#     Then I should see "couch" in the "original_product_name" field
-#     And I should see "9" in the "original_product_id" field
-#     And I should see "tv" in the "recommendation_product_name" field
-#     And I should see "10" in the "recommendation_product_id" field
-#     And I should see "UP_SELL" in the "Reason" dropdown
-#     And I should see "True" in the "Activated" dropdown
+Scenario: Create a Recommendation
+    When I visit the "Home Page"
+    And I set the "name" to "couch"
+    And I set the "original_product_id" to "9"
+    And I set the "product_name" to "tv"
+    And I set the "product_id" to "10"
+    And I select "UpSell" in the "Reason" dropdown
+    And I select "True" in the "Activated" dropdown
+    And I press the "Create" button
+    Then I should see the message "Success"
+    When I copy the "Id" field
+    And I press the "Clear" button
+    Then the "Id" field should be empty
+    And the "name" field should be empty
+    And the "original_product_id" field should be empty
+    And the "product_name" field should be empty
+    And the "product_id" field should be empty
+    When I paste the "Id" field
+    And I press the "Retrieve" button
+    Then I should see "couch" in the "name" field
+    And I should see "9" in the "original_product_id" field
+    And I should see "tv" in the "product_name" field
+    And I should see "10" in the "product_id" field
+    And I should see "UpSell" in the "Reason" dropdown
+    And I should see "True" in the "Activated" dropdown
 
 
 # Scenario: List all pets
@@ -86,12 +86,12 @@ Scenario: The server is running
 #     Then I should see "lamp" in the results
 #     Then I should not see "desk" in the results
 
-Scenario: Deactivate a Recommendation
-    When I visit the "Home Page"
-    And I set the "name" to "tea"
-    And I set the "activated" to "false"
-    Then I should see "" in the "recommendation_product_name" field
-    When I visit the "Home Page"
-    And I set the "name" to "tea"
-    And I set the "activated" to "true"
-    Then I should see "mug" in the "recommendation_product_name" field
+# Scenario: Deactivate a Recommendation
+#     When I visit the "Home Page"
+#     And I set the "name" to "tea"
+#     And I set the "activated" to "false"
+#     Then I should see "" in the "recommendation_product_name" field
+#     When I visit the "Home Page"
+#     And I set the "name" to "tea"
+#     And I set the "activated" to "true"
+#     Then I should see "mug" in the "recommendation_product_name" field
