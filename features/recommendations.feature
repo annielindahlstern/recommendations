@@ -5,11 +5,11 @@ Feature: The recommendation service back-end
 
 Background:
     Given the following recommendations
-        | name                  | original_product_id | recommendation_product_id | recommendation_product_name  | reason     | activated |
-        | desk                  | 1                   | 5                         | chair                        | CROSS_SELL | True      |
-        | mouse                 | 2                   | 6                         | keyboard                     | UP_SELL    | True      |
-        | jelly                 | 3                   | 7                         | beans                        | OTHER      | False     |
-        | tea                   | 4                   | 8                         | mug                          | ACCESSORY  | True      |
+        | name   | original_product_id | recommendation_product_id | recommendation_product_name  | reason     | activated |
+        | desk   | 1                   | 5                         | chair                        | CROSS_SELL | True      |
+        | mouse  | 2                   | 6                         | keyboard                     | UP_SELL    | True      |
+        | jelly  | 3                   | 7                         | beans                        | OTHER      | False     |
+        | tea    | 4                   | 8                         | mug                          | ACCESSORY  | True      |
 
 Scenario: The server is running
     When I visit the "Home Page"
@@ -68,24 +68,24 @@ Scenario: List all recommendations
 #     And I should see "mouse" in the results
 #     And I should not see "tea" in the results
 
-# Scenario: Update a Pet
-#     When I visit the "Home Page"
-#     And I set the "original_product_name" to "desk"
-#     And I press the "Search" button
-#     Then I should see "desk" in the "original_product_name" field
-#     And I should see "chair" in the "recommendation_product_name" field
-#     When I change "original_product_name" to "lamp"
-#     And I press the "Update" button
-#     Then I should see the message "Success"
-#     When I copy the "Id" field
-#     And I press the "Clear" button
-#     And I paste the "Id" field
-#     And I press the "Retrieve" button
-#     Then I should see "lamp" in the "original_product_name" field
-#     When I press the "Clear" button
-#     And I press the "Search" button
-#     Then I should see "lamp" in the results
-#     Then I should not see "desk" in the results
+Scenario: Update a recommendation
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I set the "name" to "desk"
+    And I press the "Search" button
+    Then I should see "desk" in the "name" field
+    When I change "name" to "lamp"
+    And I press the "Update" button
+    Then I should see the message "Success"
+    When I copy the "Id" field
+    And I press the "Clear" button
+    And I paste the "Id" field
+    And I press the "Retrieve" button
+    Then I should see "lamp" in the "name" field
+    When I press the "Clear" button
+    And I press the "Search" button
+    Then I should see "lamp" in the results
+    Then I should not see "desk" in the results
 
 # Scenario: Deactivate a Recommendation
 #     When I visit the "Home Page"
