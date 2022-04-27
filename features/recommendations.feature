@@ -96,3 +96,28 @@ Scenario: Update a recommendation
 #     And I set the "name" to "tea"
 #     And I set the "activated" to "true"
 #     Then I should see "mug" in the "recommendation_product_name" field
+
+
+# Scenario: Delete a Recommendation 
+#   When I visit the "Home Page"
+#   And I set the "customer" to "Yoda"
+#   And I press the "Search" button
+#   Then I should see "Yoda" in the "customer" field
+#   And I should see "100" in the "total" field
+#   When I press the "Delete" button
+#   When I press the "clear" button
+#   And I press the "Search" button
+#   Then I should see the message "Success"
+#   Then I should not see "Yoda" in the results #
+
+Scenario: Delete a Recommendation
+    When I visit the "Home Page"
+    And I set the "name" to "chair"
+    And I press the "Search" button
+    Then I should see "chair" in the "recommendation_product_name" field
+    And I should see "10" in the "original_product_id" field
+    When I press the "Delete" button
+    When I press the "clear" button
+    And I press the "Search" button
+    Then I should see the message "Success"
+    Then I should not see "chair" in the results
