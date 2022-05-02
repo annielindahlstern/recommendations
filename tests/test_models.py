@@ -13,7 +13,7 @@ from tests.factories import RecFactory
 
 
 DATABASE_URI = os.getenv(
-      "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres"
+      "DATABASE_URI", "postgresql://postgres:postgres@localhost:5432/postgres"
 )
 ######################################################################
 #  R E C O M M E N D A T I O N   M O D E L   T E S T   C A S E S
