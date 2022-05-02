@@ -28,7 +28,7 @@ from .factories import RecFactory
 
 # DATABASE_URI = os.getenv('DATABASE_URI', 'sqlite:///../db/test.db')
 DATABASE_URI = os.getenv(
-    "DATABASE_URI", "postgresql://postgres:postgres@localhost:5432/testdb"
+    "DATABASE_URI", "postgresql://sojzdina:AOI8q0fUV4jsyGae_bycpEdH0xif9Boe@batyr.db.elephantsql.com/sojzdina/testdb"
 )
 BASE_URL = "/recommendations"
 CONTENT_TYPE_JSON = "application/json"
