@@ -4,6 +4,7 @@ All of the models are stored in this module
 """
 import logging
 from enum import Enum
+from tokenize import Triple
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -182,3 +183,12 @@ class RecommendationModel(db.Model):
         """
         logger.info("Processing name query for %r ...", recommendation_product_name)
         return cls.query.filter(cls.recommendation_product_name == recommendation_product_name)
+    
+    @classmethod
+    def find_by_activated(cls, activated = True) -> list:
+        """Returns all Recommendations given if they were activated or not
+        Args:
+            activated (bool): the recommended product name of the Recommendation you want to match
+        """
+        logger.info("Processing name query for %r ...", activated)
+        return cls.query.filter(cls.activated == activated)

@@ -106,14 +106,27 @@ def list_recommendations():
     recs = []
 
     original_product_id = request.args.get("original_product_id")
+    name = request.args.get("name")
+    recommendation_product_name = request.args.get("recommendation_product_name")
     reason = request.args.get("reason")
+    activated = request.args.get("activated")
+
 
     if original_product_id:
         app.logger.info("Filtering by original product ID: %s", original_product_id)
         recs = RecommendationModel.find_by_original_product_id(original_product_id)
+    elif name:
+        app.logger.info("Filtering by name: %s", name)
+        recs = RecommendationModel.find_by_name(name)
+    elif recommendation_product_name:
+        app.logger.info("Filtering by Recommended Product Name: %s", recommendation_product_name)
+        recs = RecommendationModel.find_by_recommendation_product_name(recommendation_product_name)
     elif reason:
         app.logger.info("Filtering by reason: %s", original_product_id)
         recs = RecommendationModel.find_by_reason(reason)
+    elif activated:
+        app.logger.info("Filtering by whether it is activated: %s", activated)
+        recs = RecommendationModel.find_by_reason(activated)
     else:
         recs = RecommendationModel.all()
 

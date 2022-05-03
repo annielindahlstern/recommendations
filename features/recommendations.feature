@@ -53,21 +53,6 @@ Scenario: List all recommendations
     And I should see "tea" in the results
 
 
-
-# Scenario: Search for dogs
-#     When I visit the "Home Page"
-#     And I set the "recommendation_product_name" to "chair"
-#     And I press the "Search" button
-#     Then I should see "desk" in the results
-
-# Scenario: Search for available
-#     When I visit the "Home Page"
-#     And I select "True" in the "Activated" dropdown
-#     And I press the "Search" button
-#     Then I should see "desk" in the results
-#     And I should see "mouse" in the results
-#     And I should not see "tea" in the results
-
 Scenario: Update a recommendation
     When I visit the "Home Page"
     And I press the "Clear" button
@@ -87,12 +72,41 @@ Scenario: Update a recommendation
     Then I should see "lamp" in the results
     Then I should not see "desk" in the results
 
-# Scenario: Deactivate a Recommendation
+
+Scenario: List all recommendations
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I press the "Search" button
+    Then I should see "desk" in the results
+    And I should see "mouse" in the results
+    And I should see "jelly" in the results
+    And I should see "tea" in the results
+
+# Scenario: Search for dogs
 #     When I visit the "Home Page"
-#     And I set the "name" to "tea"
-#     And I set the "activated" to "false"
-#     Then I should see "" in the "recommendation_product_name" field
+#     And I set the "recommendation_product_name" to "chair"
+#     And I press the "Search" button
+#     Then I should see "desk" in the results
+
+# Scenario: Search for available
 #     When I visit the "Home Page"
-#     And I set the "name" to "tea"
-#     And I set the "activated" to "true"
-#     Then I should see "mug" in the "recommendation_product_name" field
+#     And I select "True" in the "Activated" dropdown
+#     And I press the "Search" button
+#     Then I should see "desk" in the results
+#     And I should see "mouse" in the results
+#     And I should not see "tea" in the results
+
+Scenario: Activate a Recommendation
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I set the "name" to "jelly"
+    And I press the "Search" button
+    Then I should see "false" in the results
+    And I should not see "true" in the results
+    When I press the "Activate" button
+    Then I should see "True" in the "Activated" dropdown
+    When I set the "name" to "jelly"
+    And I press the "Search" button
+    Then I should see "true" in the results
+    And I should not see "false" in the results
+

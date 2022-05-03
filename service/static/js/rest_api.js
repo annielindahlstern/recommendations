@@ -194,10 +194,8 @@ $(function () {
 
     $("#search-btn").click(function () {
 
-        let id = $("#recommendation_id").val();
-        let name = $("#recommendation_name").val();
         let original_product_id = $("#recommendation_original_product_id").val();
-        let recommendation_product_id = $("#recommendation_product_id").val();
+        let name = $("#recommendation_name").val();
         let recommendation_product_name = $("#recommendation_product_name").val();
         let reason = $("#recommendation_reason").val();
         let activated = $("#recommendation_activated").val() == "true";
@@ -207,6 +205,14 @@ $(function () {
         if (name) {
             queryString += 'name=' + name
         }
+
+        if (original_product_id) {
+            if (queryString.length > 0) {
+                queryString += '&original_product_id=' + original_product_id
+            } else {
+                queryString += 'original_product_id=' + original_product_id
+            }
+        }
         if (reason) {
             if (queryString.length > 0) {
                 queryString += '&reason=' + reason
@@ -214,6 +220,14 @@ $(function () {
                 queryString += 'reason=' + reason
             }
         }
+        if (recommendation_product_name) {
+            if (queryString.length > 0) {
+                queryString += '&recommendation_product_name=' + recommendation_product_name
+            } else {
+                queryString += 'recommendation_product_name=' + recommendation_product_name
+            }
+        }
+
         if (activated) {
             if (queryString.length > 0) {
                 queryString += '&activated=' + activated
@@ -267,6 +281,42 @@ $(function () {
             flash_message(res.responseJSON.message)
         });
 
-    });
+    })
+    $("#activate-btn").click(function () {
 
-})
+        let id = $("#recommendation_id").val();
+        let name = $("#recommendation_name").val();
+        let original_product_id = $("#recommendation_original_product_id").val();
+        let recommendation_product_id = $("#recommendation_product_id").val();
+        let recommendation_product_name = $("#recommendation_product_name").val();
+        let reason = $("#recommendation_reason").val();
+        let activated = $("#recommendation_activated").val() == "false";
+
+        let data = {
+            "name": name,
+            "original_product_id": original_product_id,
+            "recommendation_product_id": recommendation_product_id,
+            "recommendation_product_name": recommendation_product_name,
+            "reason": reason,
+            "activated": activated
+        };
+
+        $("#flash_message").empty();
+
+        let ajax = $.ajax({
+                type: "PUT",
+                url: `/recommendations/${id}/activate`,
+                contentType: "application/json",
+                data: JSON.stringify(data)
+            })
+
+        ajax.done(function(res){
+            update_form_data(res)
+        });
+
+        ajax.fail(function(res){
+            flash_message(res.responseJSON.message)
+        });
+
+    })
+});
