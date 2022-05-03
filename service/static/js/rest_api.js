@@ -194,6 +194,7 @@ $(function () {
 
     $("#search-btn").click(function () {
 
+        let original_product_id = $("#recommendation_original_product_id").val();
         let name = $("#recommendation_name").val();
         let recommendation_product_name = $("#recommendation_product_name").val();
         let reason = $("#recommendation_reason").val();
@@ -204,6 +205,14 @@ $(function () {
         if (name) {
             queryString += 'name=' + name
         }
+
+        if (original_product_id) {
+            if (queryString.length > 0) {
+                queryString += '&original_product_id=' + original_product_id
+            } else {
+                queryString += 'original_product_id=' + original_product_id
+            }
+        }
         if (reason) {
             if (queryString.length > 0) {
                 queryString += '&reason=' + reason
@@ -211,7 +220,6 @@ $(function () {
                 queryString += 'reason=' + reason
             }
         }
-
         if (recommendation_product_name) {
             if (queryString.length > 0) {
                 queryString += '&recommendation_product_name=' + recommendation_product_name
