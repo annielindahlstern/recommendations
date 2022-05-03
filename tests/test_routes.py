@@ -56,13 +56,12 @@ class TestYourRecommendationServer(unittest.TestCase):
 
     def setUp(self):
         """Runs before each test"""
-        db.drop_all()  # clean up the last tests
-        db.create_all()  # create new tables
         self.app = app.test_client()
+        db.session.query(RecommendationModel).delete() # clean up the last tests
+        db.session.commit()
 
     def tearDown(self):
         db.session.remove()
-        db.drop_all()
 
     def _create_recommendations(self, count):
         """Factory method to create recommendations in bulk"""

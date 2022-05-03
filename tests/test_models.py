@@ -47,7 +47,6 @@ class TestRecommendationModel(unittest.TestCase):
 
     def setUp(self):
         """This runs before each test"""
-        self.app = app.test_client()
         db.session.query(RecommendationModel).delete() # clean up the last tests
         db.session.commit()
 
@@ -130,7 +129,7 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(rec.id, None)
         rec.create()
         # Assert that it was assigned an id and shows up in the database
-        self.assertEqual(rec.id, 1)
+        self.assertIsNotNone(rec.id)
         recs = RecommendationModel.all()
         self.assertEqual(len(recs), 1)
 
