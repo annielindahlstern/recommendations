@@ -42,6 +42,25 @@ Scenario: Create a Recommendation
     And I should see "UpSell" in the "Reason" dropdown
     And I should see "True" in the "Activated" dropdown
 
+Scenario: Update a recommendation
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I set the "name" to "desk"
+    And I press the "Search" button
+    Then I should see "desk" in the "name" field
+    When I change "name" to "lamp"
+    And I press the "Update" button
+    Then I should see the message "Success"
+    When I copy the "Id" field
+    And I press the "Clear" button
+    And I paste the "Id" field
+    And I press the "Retrieve" button
+    Then I should see "lamp" in the "name" field
+    When I press the "Clear" button
+    And I press the "Search" button
+    Then I should see "lamp" in the results
+    Then I should not see "desk" in the results
+
 
 Scenario: List all recommendations
     When I visit the "Home Page"
@@ -68,31 +87,15 @@ Scenario: List all recommendations
 #     And I should see "mouse" in the results
 #     And I should not see "tea" in the results
 
-Scenario: Update a recommendation
-    When I visit the "Home Page"
-    And I press the "Clear" button
-    And I set the "name" to "desk"
-    And I press the "Search" button
-    Then I should see "desk" in the "name" field
-    When I change "name" to "lamp"
-    And I press the "Update" button
-    Then I should see the message "Success"
-    When I copy the "Id" field
-    And I press the "Clear" button
-    And I paste the "Id" field
-    And I press the "Retrieve" button
-    Then I should see "lamp" in the "name" field
-    When I press the "Clear" button
-    And I press the "Search" button
-    Then I should see "lamp" in the results
-    Then I should not see "desk" in the results
 
-# Scenario: Deactivate a Recommendation
+
+# Scenario: Activate a Recommendation
 #     When I visit the "Home Page"
-#     And I set the "name" to "tea"
-#     And I set the "activated" to "false"
-#     Then I should see "" in the "recommendation_product_name" field
-#     When I visit the "Home Page"
-#     And I set the "name" to "tea"
-#     And I set the "activated" to "true"
-#     Then I should see "mug" in the "recommendation_product_name" field
+#     And I press the "Clear" button
+#     And I press the "Search" button
+#     Then I should see "jelly" in the results
+#     When I copy the "Id" field
+#     And I press the "Clear" button
+#     And I paste the "Id" field
+#     And I press the "Retrieve" button
+
