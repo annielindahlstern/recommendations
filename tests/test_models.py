@@ -47,7 +47,6 @@ class TestRecommendationModel(unittest.TestCase):
 
     def setUp(self):
         """This runs before each test"""
-        self.app = app.test_client()
         db.session.query(RecommendationModel).delete() # clean up the last tests
         db.session.commit()
 
