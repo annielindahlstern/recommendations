@@ -82,20 +82,6 @@ Scenario: List all recommendations
     And I should see "jelly" in the results
     And I should see "tea" in the results
 
-# Scenario: Search for dogs
-#     When I visit the "Home Page"
-#     And I set the "recommendation_product_name" to "chair"
-#     And I press the "Search" button
-#     Then I should see "desk" in the results
-
-# Scenario: Search for available
-#     When I visit the "Home Page"
-#     And I select "True" in the "Activated" dropdown
-#     And I press the "Search" button
-#     Then I should see "desk" in the results
-#     And I should see "mouse" in the results
-#     And I should not see "tea" in the results
-
 Scenario: Activate a Recommendation
     When I visit the "Home Page"
     And I press the "Clear" button
@@ -110,3 +96,32 @@ Scenario: Activate a Recommendation
     Then I should see "true" in the results
     And I should not see "false" in the results
 
+Scenario: Query recommendation by name
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    When I set the "name" to "tea"
+    And I press the "Search" button
+    Then I should see "tea" in the results
+    And I should not see "desk" in the results
+    And I should not see "mouse" in the results
+    And I should not see "jelly" in the results
+
+Scenario: Query recommendation by Reason
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I select "CrossSale" in the "Reason" dropdown
+    And I press the "Search" button
+    Then I should see "desk" in the results
+    And I should not see "tea" in the results
+    And I should not see "mouse" in the results
+    And I should not see "jelly" in the results
+
+Scenario: Query recommendation by Activated
+    When I visit the "Home Page"
+    And I press the "Clear" button
+    And I select "True" in the "Activated" dropdown
+    And I press the "Search" button
+    Then I should see "desk" in the results
+    And I should see "tea" in the results
+    And I should see "mouse" in the results
+    And I should not see "jelly" in the results

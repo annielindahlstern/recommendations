@@ -126,7 +126,7 @@ def list_recommendations():
         recs = RecommendationModel.find_by_reason(reason)
     elif activated:
         app.logger.info("Filtering by whether it is activated: %s", activated)
-        recs = RecommendationModel.find_by_reason(activated)
+        recs = RecommendationModel.find_by_activated(activated)
     else:
         recs = RecommendationModel.all()
 
