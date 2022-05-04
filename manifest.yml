@@ -1,18 +1,16 @@
----
-# This manifest deploys a Python Flask application with a Cloudant database
+# This manifest deploys a Python Flask application with a ElephantSQL database
+# To change the hostname deploy with:
+#   cf push "${CF_APP}" --hostname <new-hostname>
 applications:
 - name: nyu-recommendation-service-sp2201
   path: .
-  instances: 2
+  instances: 1
   memory: 128M
-  routes:
-  - route: nyu-recommendation-service-sp2201.us-south.cf.appdomain.cloud
+  hostname: nyu-recommendation-service-sp2201
+  domain: us-south.cf.appdomain.cloud
   disk_quota: 1024M
-  buildpacks: 
-  - python_buildpack
+  buildpack: python_buildpack
   timeout: 180
-  
-  #this may not run correctly until ElephantSQL is connected to the app. Call name may be incorrect 
   services:
   - ElephantSQL
   env:

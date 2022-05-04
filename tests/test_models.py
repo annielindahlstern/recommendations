@@ -317,6 +317,17 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(recs[0].original_product_id, 1)
         self.assertEqual(recs[0].reason, Reason.ACCESSORY)
 
+    def test_find_by_activated(self):
+        """Find by Whether the recommendations are activated"""
+        RecommendationModel(name="iPhone", original_product_id=1, recommendation_product_name="AirPods", recommendation_product_id=10, reason = Reason.ACCESSORY, activated = True).create()
+        RecommendationModel(name="Radio", original_product_id=2, recommendation_product_name="Batteries", recommendation_product_id=6, reason = Reason.CROSS_SELL, activated = False).create()
+        recs = RecommendationModel.find_by_activated(True)
+        self.assertEqual(recs[0].recommendation_product_name, "AirPods")
+        self.assertEqual(recs[0].name, "iPhone")
+        self.assertEqual(recs[0].original_product_id, 1)
+        self.assertEqual(recs[0].reason, Reason.ACCESSORY)  
+
+
     def test_repr(self):
         """Test repr"""
         RecommendationModel(name="iPhone", original_product_id=1, recommendation_product_name="AirPods", recommendation_product_id=10, reason = Reason.ACCESSORY).create()

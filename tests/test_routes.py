@@ -28,7 +28,7 @@ from .factories import RecFactory
 
 # DATABASE_URI = os.getenv('DATABASE_URI', 'sqlite:///../db/test.db')
 DATABASE_URI = os.getenv(
-    "DATABASE_URI", "postgresql://postgres:postgres@localhost:5432/testdb"
+    "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/postgres/testdb"
 )
 BASE_URL = "/recommendations"
 CONTENT_TYPE_JSON = "application/json"
@@ -263,7 +263,69 @@ class TestYourRecommendationServer(unittest.TestCase):
         # check the data just to be sure
         for rec in data:
             self.assertEqual(rec["original_product_id"], test_original_product_id)
-     
+
+
+    def test_query_recommendation_list_by_name(self):
+        """Query Recommendations by Original Product Name"""
+        recs = self._create_recommendations(10)
+        test_name = recs[0].name
+        name_list = [rec for rec in recs if rec.name == test_name]
+
+        logging.info(
+            f"Name={test_name}: {len(name_list)} = {name_list}"
+        )
+        resp = self.app.get(
+            BASE_URL, query_string=f"name={test_name}"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), len(name_list))
+        
+        # check the data just to be sure
+        for rec in data:
+            self.assertEqual(rec["name"], test_name)   
+
+    def test_query_recommendation_list_by_recommendation_product_name(self):
+        """Query Recommendations by Recommended Product Name"""
+        recs = self._create_recommendations(10)
+        test_rec_name = recs[0].recommendation_product_name
+        Rec_name_list = [rec for rec in recs if rec.recommendation_product_name == test_rec_name]
+
+        logging.info(
+            f"Recommendation_Product_Name={test_rec_name}: {len(Rec_name_list)} = {Rec_name_list}"
+        )
+        resp = self.app.get(
+            BASE_URL, query_string=f"recommendation_product_name={test_rec_name}"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), len(Rec_name_list))
+        
+        # check the data just to be sure
+        for rec in data:
+            self.assertEqual(rec["recommendation_product_name"], test_rec_name)   
+
+
+    # def test_query_recommendation_list_by_activated(self):
+    #     """Query Recommendations by Activated Status"""
+    #     recs = self._create_recommendations(10)
+    #     test_activated = recs[0].activated
+    #     activated_list = [rec for rec in recs if rec.activated == test_activated]
+
+    #     logging.info(
+    #         f"Activated={test_activated}: {len(activated_list)} = {activated_list}"
+    #     )
+    #     resp = self.app.get(
+    #         BASE_URL, query_string=f"activated={test_activated}"
+    #     )
+    #     self.assertEqual(resp.status_code, status.HTTP_200_OK)
+    #     data = resp.get_json()
+    #     self.assertEqual(len(data), len(activated_list))
+        
+    #     # check the data just to be sure
+    #     for rec in data:
+    #         self.assertEqual(rec["activated"], test_activated)    
+
     def test_query_recommendation_list_by_reason(self):
         """Query Recommendations by Reason"""
         recs = self._create_recommendations(10)
@@ -282,7 +344,8 @@ class TestYourRecommendationServer(unittest.TestCase):
         
         # check the data just to be sure
         for rec in data:
-            self.assertEqual(rec["reason"], test_reason)       
+            self.assertEqual(rec["reason"], test_reason) 
+   
     # Testing Sad Paths
 
     # def test_recommendations_bad_content_type(self):
