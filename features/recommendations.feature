@@ -125,3 +125,16 @@ Scenario: Query recommendation by Activated
     And I should see "tea" in the results
     And I should see "mouse" in the results
     And I should not see "jelly" in the results
+
+Scenario: Delete a Recommendation
+     When I visit the "Home Page"
+     And I press the "clear" button
+     And I set the "name" to "jelly"
+     And I press the "Search" button
+     Then I should see "beans" in the "product_name" field
+     And I should see "7" in the "product_id" field
+     When I press the "Delete" button 
+     When I press the "Clear" button
+     And I press the "Search" button
+     Then I should see the message "Success"
+     And I should not see "beans" in the results
